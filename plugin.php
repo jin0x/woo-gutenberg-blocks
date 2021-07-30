@@ -132,34 +132,50 @@ function woo_gutenberg_blocks_register() {
 		array(
 			'render_callback' => 'woo_gutenberg_blocks_render_products_block',
 			'attributes'      => array(
-				'headerTitle'     => array(
+				'headerTitle'      => array(
 					'type'    => 'string',
 					'default' => get_option( 'sfn_cart_addons' ) && get_option( 'sfn_cart_addons' )['header_title']
 					                                                !== null ? get_option( 'sfn_cart_addons' )['header_title'] : __( 'Product Cart add-ons',
 						'woo-gutenberg-blocks' )
 				),
-				'defaultAddons'   => array(
+				'defaultAddons'    => array(
 					'type'    => 'array',
 					'default' => get_option( 'sfn_cart_addons' ) && get_option( 'sfn_cart_addons' )['default_addons'] !== null ? get_option( 'sfn_cart_addons' )['default_addons'] : []
 				),
-				'categoryAddons'  => array(
+				'categoryAddons'   => array(
 					'type'    => 'array',
 					'default' => get_option( 'sfn_cart_addons_categories',
 						array() ) !== null ? get_option( 'sfn_cart_addons_categories', array() ) : []
 				),
-				'productAddons'   => array(
+				'productAddons'    => array(
 					'type'    => 'array',
 					'default' => get_option( 'sfn_cart_addons_products',
 						array() ) !== null ? get_option( 'sfn_cart_addons_products', array() ) : []
 				),
-				'numberOfColumns' => array(
+				'numberOfColumns'  => array(
 					'type'    => 'number',
 					'default' => 3
 				),
-				'numberOfProducts'   => array(
+				'numberOfProducts' => array(
 					'type'    => 'number',
 					'default' => get_option( 'sfn_cart_addons' ) && get_option( 'sfn_cart_addons' )['upsell_number'] !== null ? get_option( 'sfn_cart_addons' )['upsell_number'] : 5
-				)
+				),
+				'hasProductTitle'  => array(
+					'type'    => 'boolean',
+					'default' => true
+				),
+				'hasProductPrice'  => array(
+					'type'    => 'boolean',
+					'default' => true
+				),
+				'hasProductRating' => array(
+					'type'    => 'boolean',
+					'default' => true
+				),
+				'hasProductButton' => array(
+					'type'    => 'boolean',
+					'default' => true
+				),
 			)
 		)
 	);
@@ -193,12 +209,15 @@ function woo_gutenberg_blocks_render_latest_posts_block( $attributes ) {
 
 	if ( $query->have_posts() ) {
 		$posts .= '<ul class="wp-block-woo-gutenberg-blocks-latest-posts">';
+
 		while ( $query->have_posts() ) {
 			$query->the_post();
 			$posts .= '<li><a href="' . esc_url( get_the_permalink() ) . '">'
 			          . get_the_title() . '</a></li>';
 		}
+
 		$posts .= '</ul>';
+
 		wp_reset_postdata();
 
 		return $posts;
@@ -216,22 +235,31 @@ function woo_gutenberg_blocks_render_latest_posts_block( $attributes ) {
  */
 function woo_gutenberg_blocks_render_products_block( $attributes ) {
 
-	$products = '';
+	$products     = '';
+	$header_title = $attributes['header_title'];
 
 	$args = array(
-		'posts_per_page' => $attributes['numberOfPosts']
+		'post_type'      => 'product',
+		'posts_per_page' => $attributes['numberOfProducts']
 	);
 
 	$query = new WP_Query( $args );
 
+	if ( $header_title ) {
+		$products .= '<h3 class="wp-block-woo-gutenberg-blocks-product-cart-addons__title">' . $header_title . '</h3>';
+	}
+
 	if ( $query->have_posts() ) {
 		$products .= '<ul class="wp-block-woo-gutenberg-blocks-product-cart-addons">';
+
 		while ( $query->have_posts() ) {
 			$query->the_post();
 			$products .= '<li><a href="' . esc_url( get_the_permalink() ) . '">'
-			          . get_the_title() . '</a></li>';
+			             . get_the_title() . '</a></li>';
 		}
+
 		$products .= '</ul>';
+
 		wp_reset_postdata();
 
 		return $products;

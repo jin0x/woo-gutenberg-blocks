@@ -2,7 +2,8 @@ import {Component} from "@wordpress/element";
 import {withSelect} from "@wordpress/data";
 import {__} from "@wordpress/i18n";
 import {decodeEntities} from "@wordpress/html-entities";
-import {RangeControl, PanelBody} from "@wordpress/components";
+import {RangeControl, PanelBody, ToggleControl} from "@wordpress/components";
+import {Rating} from '@woocommerce/components';
 import {InspectorControls} from "@wordpress/block-editor";
 
 class ProductCartAddons extends Component {
@@ -15,9 +16,21 @@ class ProductCartAddons extends Component {
 		this.props.setAttributes({numberOfColumns});
 	};
 
-	onChangeCategories = categories => {
-		this.props.setAttributes({postCategories: categories.join(",")});
-	};
+	onChangeProductTitleVisibility = hasProductTitle => {
+		this.props.setAttributes({hasProductTitle})
+	}
+
+	onChangeProductPriceVisibility = hasProductPrice => {
+		this.props.setAttributes({hasProductPrice})
+	}
+
+	onChangeProductRatingVisibility = hasProductRating => {
+		this.props.setAttributes({hasProductRating})
+	}
+
+	onChangeProductButtonVisibility = hasProductButton => {
+		this.props.setAttributes({hasProductButton})
+	}
 
 	render() {
 		const {products, className, attributes} = this.props;
@@ -27,11 +40,15 @@ class ProductCartAddons extends Component {
 			numberOfProducts,
 			categoryAddons,
 			productAddons,
-			defaultAddons
+			defaultAddons,
+			hasProductTitle,
+			hasProductPrice,
+			hasProductRating,
+			hasProductButton
 		} = attributes;
 
-		// console.log('ClassName: ', className);
-		// console.log('Attributes: ', attributes);
+		console.log(`Default addons: ${defaultAddons}, Category addons: ${categoryAddons}, Product addons: ${productAddons}`)
+		console.log('Attributes: ', attributes);
 
 		return (
 			<>
@@ -52,22 +69,107 @@ class ProductCartAddons extends Component {
 							max={6}
 						/>
 					</PanelBody>
+					<PanelBody
+						title={__('Content', 'woo-gutenberg-block')}
+						initialOpen
+					>
+						<ToggleControl
+							label={__('Product title', 'woo-gutenberg-block')}
+							help={
+								hasProductTitle
+									? __(
+									'Product title is visible.',
+									'woo-gutenberg-block'
+									)
+									: __(
+									'Product title is hidden.',
+									'woo-gutenberg-block'
+									)
+							}
+							checked={hasProductTitle}
+							onChange={this.onChangeProductTitleVisibility}
+						/>
+						<ToggleControl
+							label={__('Product price', 'woo-gutenberg-block')}
+							help={
+								hasProductPrice
+									? __(
+									'Product price is visible.',
+									'woo-gutenberg-block'
+									)
+									: __(
+									'Product price is hidden.',
+									'woo-gutenberg-block'
+									)
+							}
+							checked={hasProductPrice}
+							onChange={this.onChangeProductPriceVisibility}
+						/>
+						<ToggleControl
+							label={__('Product rating', 'woo-gutenberg-block')}
+							help={
+								hasProductRating
+									? __(
+									'Product rating is visible.',
+									'woo-gutenberg-block'
+									)
+									: __(
+									'Product rating is hidden.',
+									'woo-gutenberg-block'
+									)
+							}
+							checked={hasProductRating}
+							onChange={this.onChangeProductRatingVisibility}
+						/>
+						<ToggleControl
+							label={__(
+								'Add to Cart button',
+								'woo-gutenberg-block'
+							)}
+							help={
+								hasProductButton
+									? __(
+									'Add to Cart button is visible.',
+									'woo-gutenberg-block'
+									)
+									: __(
+									'Add to Cart button is hidden.',
+									'woo-gutenberg-block'
+									)
+							}
+							checked={hasProductButton}
+							onChange={this.onChangeProductButtonVisibility}
+						/>
+					</PanelBody>
 				</InspectorControls>
 				{products && products.length > 0 ? (
 					<>
 						<h3>{headerTitle}</h3>
 						<ul className={className}>
-							{products.map(product => (
-								<li key={product.id}>
-									<a
-										target="_blank"
-										rel="noopener noreferrer"
-										href={product.link}
-									>
-										{decodeEntities(product.title.rendered)}
-									</a>
-								</li>
-							))}
+							{products.map(product => {
+
+								console.log('Product ', product);
+
+									return (
+										<>
+											{
+												hasProductTitle && (
+													<li key={product.id}>
+														<a
+															target="_blank"
+															rel="noopener noreferrer"
+															href={product.link}
+														>
+															{decodeEntities(product.title.rendered)}
+														</a>
+													</li>
+												)
+											}
+											{hasProductRating && <Rating rating={5} totalStars={5}/>}
+										</>
+									)
+								}
+							)}
 						</ul>
 					</>
 				) : (
