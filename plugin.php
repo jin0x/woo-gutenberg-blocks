@@ -152,7 +152,11 @@ function woo_gutenberg_blocks_register() {
 					'default' => get_option( 'sfn_cart_addons_products',
 						array() ) !== null ? get_option( 'sfn_cart_addons_products', array() ) : []
 				),
-				'numberOfColumns'  => array(
+				'columns'  => array(
+					'type'    => 'number',
+					'default' => 3
+				),
+				'rows'  => array(
 					'type'    => 'number',
 					'default' => 3
 				),
@@ -186,45 +190,6 @@ function woo_gutenberg_blocks_register() {
 
 add_action( 'init', 'woo_gutenberg_blocks_register' );
 
-
-/**
- * Render Latest Posts Block
- *
- * @param $attributes
- *
- * @return string
- */
-function woo_gutenberg_blocks_render_latest_posts_block( $attributes ) {
-
-	$args = array(
-		'posts_per_page' => $attributes['numberOfPosts']
-	);
-
-	if ( $attributes['postCategories'] ) {
-		$args['cat'] = $attributes['postCategories'];
-	}
-
-	$query = new WP_Query( $args );
-	$posts = '';
-
-	if ( $query->have_posts() ) {
-		$posts .= '<ul class="wp-block-woo-gutenberg-blocks-latest-posts">';
-
-		while ( $query->have_posts() ) {
-			$query->the_post();
-			$posts .= '<li><a href="' . esc_url( get_the_permalink() ) . '">'
-			          . get_the_title() . '</a></li>';
-		}
-
-		$posts .= '</ul>';
-
-		wp_reset_postdata();
-
-		return $posts;
-	}
-
-	return '<div>' . __( 'No Posts Found', "woo-gutenberg-blocks" ) . '</div>';
-}
 
 /**
  * Render Product Block
@@ -266,4 +231,43 @@ function woo_gutenberg_blocks_render_products_block( $attributes ) {
 	}
 
 	return '<div>' . __( 'No Products Found', "woo-gutenberg-blocks" ) . '</div>';
+}
+
+/**
+ * Render Latest Posts Block
+ *
+ * @param $attributes
+ *
+ * @return string
+ */
+function woo_gutenberg_blocks_render_latest_posts_block( $attributes ) {
+
+	$args = array(
+		'posts_per_page' => $attributes['numberOfPosts']
+	);
+
+	if ( $attributes['postCategories'] ) {
+		$args['cat'] = $attributes['postCategories'];
+	}
+
+	$query = new WP_Query( $args );
+	$posts = '';
+
+	if ( $query->have_posts() ) {
+		$posts .= '<ul class="wp-block-woo-gutenberg-blocks-latest-posts">';
+
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			$posts .= '<li><a href="' . esc_url( get_the_permalink() ) . '">'
+			          . get_the_title() . '</a></li>';
+		}
+
+		$posts .= '</ul>';
+
+		wp_reset_postdata();
+
+		return $posts;
+	}
+
+	return '<div>' . __( 'No Posts Found', "woo-gutenberg-blocks" ) . '</div>';
 }
