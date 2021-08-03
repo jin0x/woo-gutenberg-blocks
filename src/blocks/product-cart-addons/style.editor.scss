@@ -1,0 +1,18 @@
+.wp-block-woo-gutenberg-blocks-product-cart-addons {
+    display: flex;
+    margin-left: 0;
+    margin-right: 0;
+
+
+	&__title {
+		margin-bottom: 1rem;
+	}
+
+	&__products {
+		display: flex;
+		flex-direction: column;
+		margin-left: 0;
+		margin-right: 0;
+	}
+
+}

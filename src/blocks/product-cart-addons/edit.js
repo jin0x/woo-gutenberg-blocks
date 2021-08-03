@@ -1,14 +1,24 @@
+import "./style.editor.scss";
 import {Component} from "@wordpress/element";
-import {withSelect} from "@wordpress/data";
-import {__} from "@wordpress/i18n";
-import {decodeEntities} from "@wordpress/html-entities";
-import {RangeControl, PanelBody, ToggleControl} from "@wordpress/components";
 import {
-	Rating
-} from '@woocommerce/components';
+	withSelect
+	// useSelect,
+} from "@wordpress/data";
+import {__} from "@wordpress/i18n";
+import {RangeControl, PanelBody, ToggleControl} from "@wordpress/components";
 import {InspectorControls} from "@wordpress/block-editor";
 
+import {Product} from "../../components/Product/";
+
 class ProductCartAddons extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			headerTitle: null,
+			products: [],
+			loading: true
+		};
+	}
 
 	onChangeNumberOfProducts = numberOfProducts => {
 		this.props.setAttributes({numberOfProducts});
@@ -23,23 +33,36 @@ class ProductCartAddons extends Component {
 	};
 
 	onChangeProductTitleVisibility = hasProductTitle => {
-		this.props.setAttributes({hasProductTitle})
-	}
+		this.props.setAttributes({hasProductTitle});
+	};
 
 	onChangeProductPriceVisibility = hasProductPrice => {
-		this.props.setAttributes({hasProductPrice})
-	}
+		this.props.setAttributes({hasProductPrice});
+	};
 
 	onChangeProductRatingVisibility = hasProductRating => {
-		this.props.setAttributes({hasProductRating})
-	}
+		this.props.setAttributes({hasProductRating});
+	};
 
 	onChangeProductButtonVisibility = hasProductButton => {
-		this.props.setAttributes({hasProductButton})
+		this.props.setAttributes({hasProductButton});
+	};
+
+	getLatestPosts() {
+		wp.apiFetch({
+			path: "wc/store/cart"
+		}).then(data => {
+			this.setState({
+				products: data?.extensions?.add_ons?.products ?? [],
+				headerTitle: data?.extensions?.add_ons?.header_title ?? null,
+				loading: false
+			});
+		});
+
+		return null;
 	}
 
 	getInspectorControls() {
-
 		const {attributes} = this.props;
 		const {
 			numberOfProducts,
@@ -51,11 +74,12 @@ class ProductCartAddons extends Component {
 			hasProductButton
 		} = attributes;
 
-		console.log('Attributes', attributes);
-
 		return (
-			<>
-				<PanelBody title={__("Product Options", "woo-gutenberg-blocks")} initialOpen>
+			<InspectorControls>
+				<PanelBody
+					title={__("Product Options", "woo-gutenberg-blocks")}
+					initialOpen
+				>
 					<RangeControl
 						label={__("Number of Posts", "woo-gutenberg-blocks")}
 						value={numberOfProducts}
@@ -64,7 +88,10 @@ class ProductCartAddons extends Component {
 						max={10}
 					/>
 				</PanelBody>
-				<PanelBody title={__("Layout Options", "woo-gutenberg-blocks")} initialOpen>
+				<PanelBody
+					title={__("Layout Options", "woo-gutenberg-blocks")}
+					initialOpen
+				>
 					<RangeControl
 						label={__("Columns", "woo-gutenberg-blocks")}
 						value={columns}
@@ -80,152 +107,120 @@ class ProductCartAddons extends Component {
 						max={3}
 					/>
 				</PanelBody>
-				<PanelBody title={__('Content Options', 'woo-gutenberg-block')} initialOpen>
+				<PanelBody
+					title={__("Content Options", "woo-gutenberg-block")}
+					initialOpen
+				>
 					<ToggleControl
-						label={__('Product title', 'woo-gutenberg-block')}
+						label={__("Product title", "woo-gutenberg-block")}
 						help={
 							hasProductTitle
 								? __(
-								'Product title is visible.',
-								'woo-gutenberg-block'
+								"Product title is visible.",
+								"woo-gutenberg-block"
 								)
 								: __(
-								'Product title is hidden.',
-								'woo-gutenberg-block'
+								"Product title is hidden.",
+								"woo-gutenberg-block"
 								)
 						}
 						checked={hasProductTitle}
 						onChange={this.onChangeProductTitleVisibility}
 					/>
 					<ToggleControl
-						label={__('Product price', 'woo-gutenberg-block')}
+						label={__("Product price", "woo-gutenberg-block")}
 						help={
 							hasProductPrice
 								? __(
-								'Product price is visible.',
-								'woo-gutenberg-block'
+								"Product price is visible.",
+								"woo-gutenberg-block"
 								)
 								: __(
-								'Product price is hidden.',
-								'woo-gutenberg-block'
+								"Product price is hidden.",
+								"woo-gutenberg-block"
 								)
 						}
 						checked={hasProductPrice}
 						onChange={this.onChangeProductPriceVisibility}
 					/>
 					<ToggleControl
-						label={__('Product rating', 'woo-gutenberg-block')}
+						label={__("Product rating", "woo-gutenberg-block")}
 						help={
 							hasProductRating
 								? __(
-								'Product rating is visible.',
-								'woo-gutenberg-block'
+								"Product rating is visible.",
+								"woo-gutenberg-block"
 								)
 								: __(
-								'Product rating is hidden.',
-								'woo-gutenberg-block'
+								"Product rating is hidden.",
+								"woo-gutenberg-block"
 								)
 						}
 						checked={hasProductRating}
 						onChange={this.onChangeProductRatingVisibility}
 					/>
 					<ToggleControl
-						label={__(
-							'Add to Cart button',
-							'woo-gutenberg-block'
-						)}
+						label={__("Add to Cart button", "woo-gutenberg-block")}
 						help={
 							hasProductButton
 								? __(
-								'Add to Cart button is visible.',
-								'woo-gutenberg-block'
+								"Add to Cart button is visible.",
+								"woo-gutenberg-block"
 								)
 								: __(
-								'Add to Cart button is hidden.',
-								'woo-gutenberg-block'
+								"Add to Cart button is hidden.",
+								"woo-gutenberg-block"
 								)
 						}
 						checked={hasProductButton}
 						onChange={this.onChangeProductButtonVisibility}
 					/>
 				</PanelBody>
-			</>
-		)
-
+			</InspectorControls>
+		);
 	}
 
 	render() {
-		const {products, className, attributes} = this.props;
-		const {
-			headerTitle,
-			columns,
-			rows,
-			numberOfProducts,
-			categoryAddons,
-			productAddons,
-			defaultAddons,
-			hasProductTitle,
-			hasProductPrice,
-			hasProductRating,
-			hasProductButton
-		} = attributes;
+		const {loading, products, headerTitle} = this.state;
+		const {className, attributes} = this.props;
 
-		// console.log(`Default addons: ${defaultAddons}, Category addons: ${categoryAddons}, Product addons: ${productAddons}`)
+
+		this.getLatestPosts();
+
+		// console.log('WP:: ', wp);
 		// console.log('Attributes: ', attributes);
 
+		if(loading) {
+			return <div>Loading Products...</div>
+		}
+
 		return (
-			<>
-				<InspectorControls>
-					{this.getInspectorControls()}
-				</InspectorControls>
+			<div className={className}>
+				{this.getInspectorControls()}
 				{products && products.length > 0 ? (
-					<>
+					<div className="columns">
 						<h3>{headerTitle}</h3>
 						<ul className={className}>
-							{products.map(product => {
-
-									// console.log('Product ', product);
-
-									return (
-										<>
-											{
-												hasProductTitle && (
-													<li key={product.id}>
-														<a
-															target="_blank"
-															rel="noopener noreferrer"
-															href={product.link}
-														>
-															{decodeEntities(product.title.rendered)}
-														</a>
-													</li>
-												)
-											}
-											{hasProductRating && <Rating rating={5} totalStars={5}/>}
-										</>
-									)
-								}
-							)}
+							{products.map((product) => <Product product={product} key={product.id}
+																attributes={attributes}/>)}
 						</ul>
-					</>
-				) : (
-					<div>
-						{" "}
-						{products
-							? __("No Products Found", "woo-gutenberg-blocks")
-							: __("Loading...", "woo-gutenberg-blocks")}{" "}
 					</div>
-				)}
-			</>
+				) : (<div>{__("No Products Found", "woo-gutenberg-blocks")}</div>)}
+			</div>
 		);
 	}
+
 }
 
 export default withSelect((select, props) => {
-	const {attributes} = props;
+	const {
+		attributes
+	}
+
+		= props;
 	const {numberOfProducts} = attributes;
 	let query = {per_page: numberOfProducts};
 	return {
-		products: select("core").getEntityRecords("postType", "product", query),
+		products: select("core").getEntityRecords("postType", "product", query)
 	};
 })(ProductCartAddons);
