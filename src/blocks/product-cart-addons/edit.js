@@ -184,6 +184,11 @@ class ProductCartAddons extends Component {
 		const {loading, products, headerTitle} = this.state;
 		const {className, attributes} = this.props;
 
+		const {columns} = attributes;
+
+		const titleClasses = `${className}__title`;
+		const productsClasses = `${className}__products ${className}__products-col-${columns}`;
+
 
 		this.getLatestPosts();
 
@@ -195,18 +200,18 @@ class ProductCartAddons extends Component {
 		}
 
 		return (
-			<div className={className}>
+			<>
 				{this.getInspectorControls()}
 				{products && products.length > 0 ? (
-					<div className="columns">
-						<h3>{headerTitle}</h3>
-						<ul className={className}>
+					<div className={className}>
+						<h3 className={titleClasses}>{headerTitle}</h3>
+						<ul className={productsClasses}>
 							{products.map((product) => <Product product={product} key={product.id}
 																attributes={attributes}/>)}
 						</ul>
 					</div>
 				) : (<div>{__("No Products Found", "woo-gutenberg-blocks")}</div>)}
-			</div>
+			</>
 		);
 	}
 

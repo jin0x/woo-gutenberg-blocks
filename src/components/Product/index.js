@@ -1,6 +1,7 @@
 import React from 'react';
 import {decodeEntities} from "@wordpress/html-entities"
 import {Rating} from "@woocommerce/components"
+import './styles.scss'
 
 export const Product = ({product, attributes}) => {
 
@@ -12,7 +13,7 @@ export const Product = ({product, attributes}) => {
 
 	return (
 		<>
-			<li>
+			<li className="wp-block-woo-gutenberg-blocks-product-cart-addons-product">
 				{hasProductTitle && (
 					<>
 						<img

@@ -1,8 +1,10 @@
 .wp-block-woo-gutenberg-blocks-product-cart-addons {
-    display: flex;
-    margin-left: 0;
-    margin-right: 0;
-
+	display: flex;
+	flex-direction: column;
+	margin-left: 0;
+	margin-right: 0;
+	padding: 0 !important;
+	box-sizing: border-box;
 
 	&__title {
 		margin-bottom: 1rem;
@@ -10,9 +12,18 @@
 
 	&__products {
 		display: flex;
-		flex-direction: column;
+		flex-wrap: wrap;
 		margin-left: 0;
 		margin-right: 0;
+		padding: 0 !important;
+
+		@for $i from 1 through 6 {
+			&-col-#{$i} {
+				> * {
+					width: calc(100% / #{$i});
+				}
+			}
+		}
 	}
 
 }
