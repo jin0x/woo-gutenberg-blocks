@@ -110,23 +110,6 @@ function woo_gutenberg_blocks_register() {
 		plugins_url( 'dist/style.css', __FILE__ )
 	);
 
-	woo_gutenberg_blocks_register_block_type( 'team-member' );
-	woo_gutenberg_blocks_register_block_type( 'team-members' );
-	woo_gutenberg_blocks_register_block_type(
-		'latest-posts',
-		array(
-			'render_callback' => 'woo_gutenberg_blocks_render_latest_posts_block',
-			'attributes'      => array(
-				'numberOfPosts'  => array(
-					'type'    => 'number',
-					'default' => 5
-				),
-				'postCategories' => array(
-					'type' => 'string',
-				)
-			)
-		)
-	);
 	woo_gutenberg_blocks_register_block_type(
 		'product-cart-addons',
 		array(
@@ -183,9 +166,7 @@ function woo_gutenberg_blocks_register() {
 			)
 		)
 	);
-	woo_gutenberg_blocks_register_block_type( 'redux' );
-	woo_gutenberg_blocks_register_block_type( 'todo-list' );
-	woo_gutenberg_blocks_register_block_type( 'todo-list-count' );
+
 }
 
 add_action( 'init', 'woo_gutenberg_blocks_register' );
@@ -231,43 +212,4 @@ function woo_gutenberg_blocks_render_products_block( $attributes ) {
 	}
 
 	return '<div>' . __( 'No Products Found', "woo-gutenberg-blocks" ) . '</div>';
-}
-
-/**
- * Render Latest Posts Block
- *
- * @param $attributes
- *
- * @return string
- */
-function woo_gutenberg_blocks_render_latest_posts_block( $attributes ) {
-
-	$args = array(
-		'posts_per_page' => $attributes['numberOfPosts']
-	);
-
-	if ( $attributes['postCategories'] ) {
-		$args['cat'] = $attributes['postCategories'];
-	}
-
-	$query = new WP_Query( $args );
-	$posts = '';
-
-	if ( $query->have_posts() ) {
-		$posts .= '<ul class="wp-block-woo-gutenberg-blocks-latest-posts">';
-
-		while ( $query->have_posts() ) {
-			$query->the_post();
-			$posts .= '<li><a href="' . esc_url( get_the_permalink() ) . '">'
-			          . get_the_title() . '</a></li>';
-		}
-
-		$posts .= '</ul>';
-
-		wp_reset_postdata();
-
-		return $posts;
-	}
-
-	return '<div>' . __( 'No Posts Found', "woo-gutenberg-blocks" ) . '</div>';
 }
