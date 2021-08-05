@@ -119,67 +119,63 @@ function woo_gutenberg_blocks_register()
         array (
             'render_callback' => 'woo_gutenberg_blocks_render_products_block',
             'attributes'      => array (
-                'categoryMatchesItems'         => array (
-                    'type'    => 'array',
-                    'default' => []
-                ),
-                'productCategories' => array (
-                    'type'    => 'array',
-                    'default' => []
-                ),
-                'categoryMatches'   => array (
-                    'type'    => 'array',
-                    'default' => []
-                ),
-                'productMatches'   => array (
-                    'type'    => 'array',
-                    'default' => []
-                ),
-                'headerTitle'      => array (
+                'headerTitle'          => array (
                     'type'    => 'string',
                     'default' => get_option('sfn_cart_addons') && get_option('sfn_cart_addons')['header_title']
                                                                   !== null ? get_option('sfn_cart_addons')['header_title'] : __('Product Cart add-ons',
                         'woo-gutenberg-blocks')
                 ),
-                'defaultAddons'    => array (
-                    'type'    => 'array',
-                    'default' => get_option('sfn_cart_addons') && get_option('sfn_cart_addons')['default_addons'] !== null ? get_option('sfn_cart_addons')['default_addons'] : []
+                'numberOfProducts'     => array (
+                    'type'    => 'number',
+                    'default' => get_option('sfn_cart_addons') && get_option('sfn_cart_addons')['upsell_number'] !== null ? get_option('sfn_cart_addons')['upsell_number'] : 5
                 ),
-                'categoryAddons'   => array (
+                'defaultAddons'        => array (
+                    'type'    => 'array',
+                    'default' => []
+                ),
+                'categoryMatchesItems' => array (
+                    'type'    => 'array',
+                    'default' => []
+                ),
+                'categoryMatches'      => array (
+                    'type'    => 'array',
+                    'default' => []
+                ),
+                'productMatches'       => array (
+                    'type'    => 'array',
+                    'default' => []
+                ),
+                'categoryAddons'       => array (
                     'type'    => 'array',
                     'default' => get_option('sfn_cart_addons_categories',
                         array ()) !== null ? get_option('sfn_cart_addons_categories', array ()) : []
                 ),
-                'productAddons'    => array (
+                'productAddons'        => array (
                     'type'    => 'array',
                     'default' => get_option('sfn_cart_addons_products',
                         array ()) !== null ? get_option('sfn_cart_addons_products', array ()) : []
                 ),
-                'columns'          => array (
+                'columns'              => array (
                     'type'    => 'number',
                     'default' => 3
                 ),
-                'rows'             => array (
+                'rows'                 => array (
                     'type'    => 'number',
                     'default' => 3
                 ),
-                'numberOfProducts' => array (
-                    'type'    => 'number',
-                    'default' => get_option('sfn_cart_addons') && get_option('sfn_cart_addons')['upsell_number'] !== null ? get_option('sfn_cart_addons')['upsell_number'] : 5
-                ),
-                'hasProductTitle'  => array (
+                'hasProductTitle'      => array (
                     'type'    => 'boolean',
                     'default' => true
                 ),
-                'hasProductPrice'  => array (
+                'hasProductPrice'      => array (
                     'type'    => 'boolean',
                     'default' => true
                 ),
-                'hasProductRating' => array (
+                'hasProductRating'     => array (
                     'type'    => 'boolean',
                     'default' => true
                 ),
-                'hasProductButton' => array (
+                'hasProductButton'     => array (
                     'type'    => 'boolean',
                     'default' => true
                 ),
