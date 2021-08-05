@@ -6,11 +6,9 @@ import {Component} from "@wordpress/element";
 import {__} from "@wordpress/i18n";
 import {
     Button,
-    FormTokenField,
     IconButton,
     PanelBody,
     RangeControl,
-    SelectControl,
     TextControl,
     ToggleControl,
 } from "@wordpress/components";
@@ -324,19 +322,12 @@ class ProductCartAddons extends Component {
         const {
             columns,
             headerTitle,
-            defaultAddons
         } = attributes;
 
         const titleClasses = `${className}__title`;
         const productsClasses = `${className}__products ${className}__products-col-${columns}`;
 
         this.getProductCartAddons();
-
-        // console.log('Get Default addons:  ', defaultAddons);
-        // console.log('Attributes: ', attributes);
-        // console.log('✨✨✨✨✨✨✨✨✨✨✨✨');
-        // console.log('✨✨✨✨✨✨✨✨✨✨✨✨');
-        // console.log('✨✨✨✨✨✨✨✨✨✨✨✨');
 
         if (loading) {
             return <div>Loading Products...</div>

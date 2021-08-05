@@ -1,7 +1,6 @@
 import React from 'react';
 import {FormTokenField} from '@wordpress/components';
 
-
 const ProductAddonsSelect = ({...props}) => {
     const {attributes, index} = props;
     const {defaultAddons, productMatches} = attributes;
@@ -21,11 +20,7 @@ const ProductAddonsSelect = ({...props}) => {
             onChange={(tokens) => {
                 const productMatches = [...props.attributes.productMatches];
 
-
                 productMatches[index] = tokens;
-                console.log('PRODUCT MATCHES::: ', productMatches);
-
-
                 props.setAttributes({productMatches});
             }}
         />
