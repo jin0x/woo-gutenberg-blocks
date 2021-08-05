@@ -73,17 +73,6 @@ class ProductCartAddons extends Component {
         this.props.setAttributes({categoryMatchesItems});
     };
 
-    handleProductMatchesChange = (product, index) => {
-        // const productMatches = [...this.props.attributes.productMatches];
-
-        // console.log('Product Selected: ', product);
-        // console.log('Product Matches: ', this.props.attributes.productMatches);
-        // console.log('===========================================');
-
-        // productMatches[index] = product;
-        // this.props.setAttributes({productMatches});
-    };
-
     /**
      * Get Product cart add-ons
      *
@@ -103,21 +92,6 @@ class ProductCartAddons extends Component {
         return null;
     }
 
-
-    /**
-     * Get Product Options
-     *
-     * @return {[{label: string, value: string}, {label: string, value: string}, {label: string, value: string}]}
-     */
-    getProductOptions() {
-        return [
-            'Hoodie with zipper',
-            'Polo Shirt',
-            'Levis Jeans',
-            'Red Hat',
-        ]
-    }
-
     /**
      * Get Default Controls
      *
@@ -129,7 +103,6 @@ class ProductCartAddons extends Component {
             headerTitle,
             numberOfProducts,
         } = attributes;
-
 
         return [
             <PanelBody
@@ -145,7 +118,7 @@ class ProductCartAddons extends Component {
                     onChange={(text) => this.props.setAttributes({headerTitle: text})}
                 />
 
-                <ProductAddonsSelect {...this.props} />
+                <ProductAddonsSelect {...this.props} label={__('Select product default addons:')} />
 
                 <RangeControl
                     label={__("Number of Products", "woo-gutenberg-blocks")}
@@ -175,25 +148,16 @@ class ProductCartAddons extends Component {
         const {attributes} = this.props;
         const {
             categoryMatchesItems,
-            productMatches,
         } = attributes;
-
-        /**
-         * Product Addons Options
-         */
-        const productOptions = this.getProductOptions();
 
         if (categoryMatchesItems.length) {
             categoryMatchesFields = categoryMatchesItems.map((location, index) => {
                 return (
                     <>
                         <ProductCategorySelect {...this.props} index={index}/>
-                        <FormTokenField
-                            label={__('Select Product Add-ons:')}
-                            value={productMatches[index] ?? []}
-                            suggestions={productOptions}
-                            onChange={(products) => this.handleProductMatchesChange(products, index)}
-                        />
+
+                        <ProductAddonsSelect {...this.props} index={index} label={__('Select Product Add-ons:')} />
+
                         <IconButton
                             icon="no-alt"
                             label="Delete category match"

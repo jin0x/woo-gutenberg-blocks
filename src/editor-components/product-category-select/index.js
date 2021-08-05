@@ -14,15 +14,7 @@ const ProductCategorySelect = ({...props}) => {
         {value: 3, label: 'Jeans'}
     ];
 
-
-    return !!index ? (
-        <SelectControl
-            label={__('Select category:')}
-            value={categoryMatches[index] ?? []}
-            options={categoryOptions}
-            onChange={(category) => props.setAttributes({categoryMatches: category})}
-        />
-    ) : (
+    return index || index === 0 ? (
         <SelectControl
             label={__('Select category:')}
             value={categoryMatches[index] ?? []}
@@ -33,6 +25,13 @@ const ProductCategorySelect = ({...props}) => {
                 categoryMatches[index] = category;
                 props.setAttributes({categoryMatches});
             }}
+        />
+    ) : (
+        <SelectControl
+            label={__('Select category:')}
+            value={categoryMatches[index] ?? []}
+            options={categoryOptions}
+            onChange={(category) => props.setAttributes({categoryMatches: category})}
         />
     );
 };
