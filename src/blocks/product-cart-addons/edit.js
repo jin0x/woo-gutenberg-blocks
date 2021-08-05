@@ -3,10 +3,6 @@ import "./style.editor.scss";
  * External Dependencies
  */
 import {Component} from "@wordpress/element";
-import {
-    withSelect
-    // useSelect,
-} from "@wordpress/data";
 import {__} from "@wordpress/i18n";
 import {
     Button,
@@ -15,8 +11,8 @@ import {
     PanelBody,
     RangeControl,
     SelectControl,
-    ToggleControl,
     TextControl,
+    ToggleControl,
 } from "@wordpress/components";
 import {InspectorControls} from "@wordpress/block-editor";
 
@@ -30,7 +26,6 @@ class ProductCartAddons extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            headerTitle: null,
             products: [],
             loading: true
         };
@@ -42,10 +37,6 @@ class ProductCartAddons extends Component {
 
     onChangeColumns = columns => {
         this.props.setAttributes({columns});
-    };
-
-    onChangeRows = rows => {
-        this.props.setAttributes({rows});
     };
 
     onChangeProductTitleVisibility = hasProductTitle => {
@@ -68,6 +59,20 @@ class ProductCartAddons extends Component {
         this.props.setAttributes({productCategories});
     };
 
+
+    handleDefaultAddons = (product) => {
+        const {attributes} = this.props;
+        const {defaultAddons} = attributes;
+
+        console.log('Product: ', product);
+        console.log('Default Addons:::: ', defaultAddons);
+        console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
+        console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
+        console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
+        console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
+
+    }
+
     handleAddCategoryMatches = () => {
         const categoryMatchesItems = [...this.props.attributes.categoryMatchesItems];
         categoryMatchesItems.push('');
@@ -83,20 +88,20 @@ class ProductCartAddons extends Component {
     handleCategoryMatchesChange = (category, index) => {
         const categoryMatches = [...this.props.attributes.categoryMatches];
 
-        console.log('Category Selected: ', category);
-        console.log('Category Matches: ', categoryMatches);
-        console.log('===========================================');
+        // console.log('Category Selected: ', category);
+        // console.log('Category Matches: ', categoryMatches);
+        // console.log('===========================================');
 
         categoryMatches[index] = category;
         this.props.setAttributes({categoryMatches});
     };
 
     handleProductMatchesChange = (product, index) => {
-        const productMatches = [...this.props.attributes.productMatches];
+        // const productMatches = [...this.props.attributes.productMatches];
 
-        console.log('Product Selected: ', product);
-        console.log('Product Matches: ', productMatches);
-        console.log('===========================================');
+        // console.log('Product Selected: ', product);
+        // console.log('Product Matches: ', this.props.attributes.productMatches);
+        // console.log('===========================================');
 
         // productMatches[index] = product;
         // this.props.setAttributes({productMatches});
@@ -121,44 +126,119 @@ class ProductCartAddons extends Component {
         return null;
     }
 
+    /**
+     * Get Default Addons
+     *
+     * @return {*}
+     */
+    getDefaultAddons() {
+        return this.props.defaultAddons;
+    }
 
     /**
-     * Get location controls
+     * Get Product Category Options
+     *
+     * @return {[{disabled: boolean, label: string, value: null}, {label: string, value: string}, {label: string, value: string}, {label: string, value: string}]}
      */
-    getLocationControls() {
+    getCategoryOptions() {
+        return [
+            {value: null, label: 'Select a Category', disabled: true},
+            {value: 1, label: 'Hoodies'},
+            {value: 2, label: 'Shirts'},
+            {value: 3, label: 'Jeans'}
+        ]
+    }
+
+    /**
+     * Get Product Options
+     *
+     * @return {[{label: string, value: string}, {label: string, value: string}, {label: string, value: string}]}
+     */
+    getProductOptions() {
+        return [
+            {value: 16, label: 'Hoodie with zipper'},
+            {value: 18, label: 'Polo Shirt'},
+            {value: 32, label: 'Levis Jeans'},
+            {value: 21, label: 'Red Hat'},
+        ]
+    }
+
+    /**
+     * Get Default Controls
+     *
+     * @return {JSX.Element[]}
+     */
+    getDefaultControls() {
+        const {attributes} = this.props;
+        const {
+            headerTitle,
+            defaultAddons,
+            numberOfProducts,
+        } = attributes;
+
+
+        return [
+            <PanelBody
+                title={__("Default Options", "woo-gutenberg-blocks")}
+                initialOpen
+            >
+                <TextControl
+                    value={headerTitle}
+                    label={__("Display Title", "woo-gutenberg-blocks")}
+                    labelPosition="top"
+                    type="text"
+                    isPressEnterToChange
+                    onChange={(text) => this.props.setAttributes({headerTitle: text})}
+                />
+                <FormTokenField
+                    label={__('Select Default Product Add-ons:')}
+                    value={defaultAddons ?? []}
+                    suggestions={this.getProductOptions()}
+                    onChange={this.handleDefaultAddons}
+                />
+                <RangeControl
+                    label={__("Number of Posts", "woo-gutenberg-blocks")}
+                    value={numberOfProducts}
+                    onChange={this.onChangeNumberOfProducts}
+                    min={1}
+                    max={10}
+                />
+                <TextControl
+                    value={numberOfProducts}
+                    label={__("Number of Posts", "woo-gutenberg-blocks")}
+                    labelPosition="top"
+                    type="number"
+                    isPressEnterToChange
+                    onChange={this.onChangeNumberOfProducts}
+                />
+            </PanelBody>
+        ]
+    }
+
+    /**
+     * Get category matches controls
+     */
+    getCategoryMatchesControls() {
         let categoryMatchesFields;
 
         const {attributes} = this.props;
         const {
             categoryMatchesItems,
-            productCategories,
+            categoryMatches,
             productMatches,
-            categoryMatches
         } = attributes;
-
 
         /**
          * Product Categories Options
-         *
-         * @type {string[]}
          */
-        const productCategoriesOptions = [
-            {value: null, label: 'Select a Category', disabled: true},
-            {value: 'hoodies', label: 'Hoodies'},
-            {value: 'shirts', label: 'Shirts'},
-            {value: 'jeans', label: 'Jeans'}
-        ]
+        const productCategoriesOptions = this.getCategoryOptions();
+
+        console.log('Product Categories Options: ', productCategoriesOptions);
 
         /**
          * Product Addons Options
-         *
-         * @type {[{label: string, value: string}, {label: string, value: string}, {label: string, value: string}]}
          */
-        const productAddonsOptions = [
-            {value: 'hoodie-with-zipper', label: 'Hoodie with zipper'},
-            {value: 'polo-shirts', label: 'Polo Shirt'},
-            {value: 'levis-jean', label: 'Levis Jeans'}
-        ]
+        const productOptions = this.getProductOptions();
 
         /*
         console.log('✨✨✨✨✨ Category Matches Items::: ', categoryMatchesItems);
@@ -179,9 +259,9 @@ class ProductCartAddons extends Component {
                         />
                         <FormTokenField
                             label={__('Select Product Add-ons:')}
-                            value={productCategories}
-                            suggestions={productAddonsOptions}
-                            onChange={(productCategories) => this.props.setAttributes({productCategories})}
+                            value={productMatches[index] ?? []}
+                            suggestions={productOptions}
+                            onChange={(products) => this.handleProductMatchesChange(products, index)}
                         />
                         <IconButton
                             icon="no-alt"
@@ -194,19 +274,131 @@ class ProductCartAddons extends Component {
         }
 
         return [
-            <InspectorControls key="1">
-                <PanelBody title={__('Category Matches')}>
-                    {categoryMatchesFields}
-                    <Button
-                        isDefault
-                        isPrimary
-                        onClick={this.handleAddCategoryMatches.bind(this)}
-                    >
-                        {__('Add Category Match')}
-                    </Button>
-                </PanelBody>
-            </InspectorControls>
+
+            <PanelBody title={__('Category Matches')}>
+                {categoryMatchesFields}
+                <Button
+                    isPrimary
+                    onClick={this.handleAddCategoryMatches.bind(this)}
+                >
+                    {__('Add Category Match')}
+                </Button>
+            </PanelBody>
+
         ];
+    }
+
+    /**
+     * Get Layout Controls
+     *
+     * @return {JSX.Element[]}
+     */
+    getLayoutControls() {
+        const {attributes} = this.props;
+        const {columns} = attributes;
+
+        return [
+            <PanelBody
+                title={__("Layout Options", "woo-gutenberg-blocks")}
+                initialOpen
+            >
+                <RangeControl
+                    label={__("Columns", "woo-gutenberg-blocks")}
+                    value={columns}
+                    onChange={this.onChangeColumns}
+                    min={1}
+                    max={6}
+                />
+            </PanelBody>
+        ]
+    }
+
+    /**
+     * Get Content Controls
+     *
+     * @return {JSX.Element[]}
+     */
+    getContentControls() {
+        const {attributes} = this.props;
+
+        const {
+            hasProductTitle,
+            hasProductPrice,
+            hasProductRating,
+            hasProductButton,
+        } = attributes;
+
+        return [
+            <PanelBody
+                title={__("Content Options", "woo-gutenberg-block")}
+                initialOpen
+            >
+                <ToggleControl
+                    label={__("Product title", "woo-gutenberg-block")}
+                    help={
+                        hasProductTitle
+                            ? __(
+                            "Product title is visible.",
+                            "woo-gutenberg-block"
+                            )
+                            : __(
+                            "Product title is hidden.",
+                            "woo-gutenberg-block"
+                            )
+                    }
+                    checked={hasProductTitle}
+                    onChange={this.onChangeProductTitleVisibility}
+                />
+                <ToggleControl
+                    label={__("Product price", "woo-gutenberg-block")}
+                    help={
+                        hasProductPrice
+                            ? __(
+                            "Product price is visible.",
+                            "woo-gutenberg-block"
+                            )
+                            : __(
+                            "Product price is hidden.",
+                            "woo-gutenberg-block"
+                            )
+                    }
+                    checked={hasProductPrice}
+                    onChange={this.onChangeProductPriceVisibility}
+                />
+                <ToggleControl
+                    label={__("Product rating", "woo-gutenberg-block")}
+                    help={
+                        hasProductRating
+                            ? __(
+                            "Product rating is visible.",
+                            "woo-gutenberg-block"
+                            )
+                            : __(
+                            "Product rating is hidden.",
+                            "woo-gutenberg-block"
+                            )
+                    }
+                    checked={hasProductRating}
+                    onChange={this.onChangeProductRatingVisibility}
+                />
+                <ToggleControl
+                    label={__("Add to Cart button", "woo-gutenberg-block")}
+                    help={
+                        hasProductButton
+                            ? __(
+                            "Add to Cart button is visible.",
+                            "woo-gutenberg-block"
+                            )
+                            : __(
+                            "Add to Cart button is hidden.",
+                            "woo-gutenberg-block"
+                            )
+                    }
+                    checked={hasProductButton}
+                    onChange={this.onChangeProductButtonVisibility}
+                />
+            </PanelBody>
+        ]
     }
 
     /**
@@ -215,139 +407,41 @@ class ProductCartAddons extends Component {
      * @return {JSX.Element}
      */
     getInspectorControls() {
-        const {attributes} = this.props;
-        const {
-            numberOfProducts,
-            columns,
-            rows,
-            hasProductTitle,
-            hasProductPrice,
-            hasProductRating,
-            hasProductButton,
-        } = attributes;
-
 
         return (
             <InspectorControls>
-                <PanelBody
-                    title={__("Product Options", "woo-gutenberg-blocks")}
-                    initialOpen
-                >
-                    <RangeControl
-                        label={__("Number of Posts", "woo-gutenberg-blocks")}
-                        value={numberOfProducts}
-                        onChange={this.onChangeNumberOfProducts}
-                        min={1}
-                        max={10}
-                    />
-                    {this.getLocationControls()}
 
-                </PanelBody>
-                <PanelBody
-                    title={__("Layout Options", "woo-gutenberg-blocks")}
-                    initialOpen
-                >
-                    <RangeControl
-                        label={__("Columns", "woo-gutenberg-blocks")}
-                        value={columns}
-                        onChange={this.onChangeColumns}
-                        min={1}
-                        max={6}
-                    />
-                    <RangeControl
-                        label={__("Rows", "woo-gutenberg-blocks")}
-                        value={rows}
-                        onChange={this.onChangeRows}
-                        min={1}
-                        max={3}
-                    />
-                </PanelBody>
-                <PanelBody
-                    title={__("Content Options", "woo-gutenberg-block")}
-                    initialOpen
-                >
-                    <ToggleControl
-                        label={__("Product title", "woo-gutenberg-block")}
-                        help={
-                            hasProductTitle
-                                ? __(
-                                "Product title is visible.",
-                                "woo-gutenberg-block"
-                                )
-                                : __(
-                                "Product title is hidden.",
-                                "woo-gutenberg-block"
-                                )
-                        }
-                        checked={hasProductTitle}
-                        onChange={this.onChangeProductTitleVisibility}
-                    />
-                    <ToggleControl
-                        label={__("Product price", "woo-gutenberg-block")}
-                        help={
-                            hasProductPrice
-                                ? __(
-                                "Product price is visible.",
-                                "woo-gutenberg-block"
-                                )
-                                : __(
-                                "Product price is hidden.",
-                                "woo-gutenberg-block"
-                                )
-                        }
-                        checked={hasProductPrice}
-                        onChange={this.onChangeProductPriceVisibility}
-                    />
-                    <ToggleControl
-                        label={__("Product rating", "woo-gutenberg-block")}
-                        help={
-                            hasProductRating
-                                ? __(
-                                "Product rating is visible.",
-                                "woo-gutenberg-block"
-                                )
-                                : __(
-                                "Product rating is hidden.",
-                                "woo-gutenberg-block"
-                                )
-                        }
-                        checked={hasProductRating}
-                        onChange={this.onChangeProductRatingVisibility}
-                    />
-                    <ToggleControl
-                        label={__("Add to Cart button", "woo-gutenberg-block")}
-                        help={
-                            hasProductButton
-                                ? __(
-                                "Add to Cart button is visible.",
-                                "woo-gutenberg-block"
-                                )
-                                : __(
-                                "Add to Cart button is hidden.",
-                                "woo-gutenberg-block"
-                                )
-                        }
-                        checked={hasProductButton}
-                        onChange={this.onChangeProductButtonVisibility}
-                    />
-                </PanelBody>
+                {this.getDefaultControls()}
+
+                {this.getCategoryMatchesControls()}
+
+                {this.getLayoutControls()}
+
+                {this.getContentControls()}
+
             </InspectorControls>
         );
     }
 
     render() {
-        const {loading, products, headerTitle} = this.state;
+        const {loading, products} = this.state;
         const {className, attributes} = this.props;
-
-        const {columns} = attributes;
+        const {
+            columns,
+            headerTitle,
+            defaultAddons
+        } = attributes;
 
         const titleClasses = `${className}__title`;
         const productsClasses = `${className}__products ${className}__products-col-${columns}`;
 
         this.getProductCartAddons();
 
-        // console.log('WP:: ', wp);
-        // console.log('Attributes: ', attributes);
+        // console.log('Get Default addons:  ', defaultAddons);
+        console.log('Attributes: ', attributes);
+        console.log('✨✨✨✨✨✨✨✨✨✨✨✨');
+        console.log('✨✨✨✨✨✨✨✨✨✨✨✨');
+        console.log('✨✨✨✨✨✨✨✨✨✨✨✨');
 
         if (loading) {
             return <div>Loading Products...</div>
@@ -371,15 +465,4 @@ class ProductCartAddons extends Component {
 
 }
 
-export default withSelect((select, props) => {
-    const {
-        attributes
-    }
-
-        = props;
-    const {numberOfProducts} = attributes;
-    let query = {per_page: numberOfProducts};
-    return {
-        products: select("core").getEntityRecords("postType", "product", query)
-    };
-})(ProductCartAddons);
+export default ProductCartAddons;
