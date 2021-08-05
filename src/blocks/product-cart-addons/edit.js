@@ -19,6 +19,7 @@ import {InspectorControls} from "@wordpress/block-editor";
 /**
  * Internal Dependencies
  */
+import ProductAddonsSelect from "../../editor-components/product-addons-select"
 import {Product} from "../../components/Product/";
 
 class ProductCartAddons extends Component {
@@ -64,12 +65,12 @@ class ProductCartAddons extends Component {
         const {attributes} = this.props;
         const {defaultAddons} = attributes;
 
-        console.log('Product: ', product);
-        console.log('Default Addons:::: ', defaultAddons);
-        console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
-        console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
-        console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
-        console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
+        // console.log('Product: ', product);
+        // console.log('Default Addons:::: ', defaultAddons);
+        // console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
+        // console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
+        // console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
+        // console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
 
     }
 
@@ -156,10 +157,10 @@ class ProductCartAddons extends Component {
      */
     getProductOptions() {
         return [
-            {value: 16, label: 'Hoodie with zipper'},
-            {value: 18, label: 'Polo Shirt'},
-            {value: 32, label: 'Levis Jeans'},
-            {value: 21, label: 'Red Hat'},
+            'Hoodie with zipper',
+            'Polo Shirt',
+            'Levis Jeans',
+            'Red Hat',
         ]
     }
 
@@ -172,7 +173,6 @@ class ProductCartAddons extends Component {
         const {attributes} = this.props;
         const {
             headerTitle,
-            defaultAddons,
             numberOfProducts,
         } = attributes;
 
@@ -190,14 +190,21 @@ class ProductCartAddons extends Component {
                     isPressEnterToChange
                     onChange={(text) => this.props.setAttributes({headerTitle: text})}
                 />
+
+                <ProductAddonsSelect {...this.props} />
+
                 <FormTokenField
                     label={__('Select Default Product Add-ons:')}
-                    value={defaultAddons ?? []}
+                    value={[]}
                     suggestions={this.getProductOptions()}
-                    onChange={this.handleDefaultAddons}
+                    maxSuggestions={5}
+                    onChange={(products) => {
+                        products.map(product => console.log(product));
+
+                    }}
                 />
                 <RangeControl
-                    label={__("Number of Posts", "woo-gutenberg-blocks")}
+                    label={__("Number of Products", "woo-gutenberg-blocks")}
                     value={numberOfProducts}
                     onChange={this.onChangeNumberOfProducts}
                     min={1}
@@ -205,7 +212,7 @@ class ProductCartAddons extends Component {
                 />
                 <TextControl
                     value={numberOfProducts}
-                    label={__("Number of Posts", "woo-gutenberg-blocks")}
+                    label={__("Number of Products", "woo-gutenberg-blocks")}
                     labelPosition="top"
                     type="number"
                     isPressEnterToChange
@@ -233,7 +240,7 @@ class ProductCartAddons extends Component {
          */
         const productCategoriesOptions = this.getCategoryOptions();
 
-        console.log('Product Categories Options: ', productCategoriesOptions);
+        // console.log('Product Categories Options: ', productCategoriesOptions);
 
         /**
          * Product Addons Options
@@ -438,10 +445,10 @@ class ProductCartAddons extends Component {
         this.getProductCartAddons();
 
         // console.log('Get Default addons:  ', defaultAddons);
-        console.log('Attributes: ', attributes);
-        console.log('✨✨✨✨✨✨✨✨✨✨✨✨');
-        console.log('✨✨✨✨✨✨✨✨✨✨✨✨');
-        console.log('✨✨✨✨✨✨✨✨✨✨✨✨');
+        // console.log('Attributes: ', attributes);
+        // console.log('✨✨✨✨✨✨✨✨✨✨✨✨');
+        // console.log('✨✨✨✨✨✨✨✨✨✨✨✨');
+        // console.log('✨✨✨✨✨✨✨✨✨✨✨✨');
 
         if (loading) {
             return <div>Loading Products...</div>
