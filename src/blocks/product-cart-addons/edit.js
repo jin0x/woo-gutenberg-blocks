@@ -20,6 +20,7 @@ import {InspectorControls} from "@wordpress/block-editor";
  * Internal Dependencies
  */
 import ProductAddonsSelect from "../../editor-components/product-addons-select"
+import ProductCategorySelect from "../../editor-components/product-category-select"
 import {Product} from "../../components/Product/";
 
 class ProductCartAddons extends Component {
@@ -72,13 +73,6 @@ class ProductCartAddons extends Component {
         this.props.setAttributes({categoryMatchesItems});
     };
 
-    handleCategoryMatchesChange = (category, index) => {
-        const categoryMatches = [...this.props.attributes.categoryMatches];
-
-        categoryMatches[index] = category;
-        this.props.setAttributes({categoryMatches});
-    };
-
     handleProductMatchesChange = (product, index) => {
         // const productMatches = [...this.props.attributes.productMatches];
 
@@ -109,19 +103,6 @@ class ProductCartAddons extends Component {
         return null;
     }
 
-    /**
-     * Get Product Category Options
-     *
-     * @return {[{disabled: boolean, label: string, value: null}, {label: string, value: string}, {label: string, value: string}, {label: string, value: string}]}
-     */
-    getCategoryOptions() {
-        return [
-            {value: null, label: 'Select a Category', disabled: true},
-            {value: 1, label: 'Hoodies'},
-            {value: 2, label: 'Shirts'},
-            {value: 3, label: 'Jeans'}
-        ]
-    }
 
     /**
      * Get Product Options
@@ -194,39 +175,19 @@ class ProductCartAddons extends Component {
         const {attributes} = this.props;
         const {
             categoryMatchesItems,
-            categoryMatches,
             productMatches,
         } = attributes;
-
-        /**
-         * Product Categories Options
-         */
-        const productCategoriesOptions = this.getCategoryOptions();
-
-        // console.log('Product Categories Options: ', productCategoriesOptions);
 
         /**
          * Product Addons Options
          */
         const productOptions = this.getProductOptions();
 
-        /*
-        console.log('✨✨✨✨✨ Category Matches Items::: ', categoryMatchesItems);
-        console.log('✨✨✨✨✨ Category Matches::: ', categoryMatches);
-        console.log('✨✨✨✨✨ Product Matches::: ', productMatches);
-        console.log('✨✨✨✨✨ Product Categories::: ', productCategories);
-         */
-
         if (categoryMatchesItems.length) {
             categoryMatchesFields = categoryMatchesItems.map((location, index) => {
                 return (
                     <>
-                        <SelectControl
-                            label={__('Select category:')}
-                            value={categoryMatches[index] ?? []}
-                            options={productCategoriesOptions}
-                            onChange={(category) => this.handleCategoryMatchesChange(category, index)}
-                        />
+                        <ProductCategorySelect {...this.props} index={index}/>
                         <FormTokenField
                             label={__('Select Product Add-ons:')}
                             value={productMatches[index] ?? []}
