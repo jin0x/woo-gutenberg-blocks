@@ -60,20 +60,6 @@ class ProductCartAddons extends Component {
         this.props.setAttributes({productCategories});
     };
 
-
-    handleDefaultAddons = (product) => {
-        const {attributes} = this.props;
-        const {defaultAddons} = attributes;
-
-        // console.log('Product: ', product);
-        // console.log('Default Addons:::: ', defaultAddons);
-        // console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
-        // console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
-        // console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
-        // console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
-
-    }
-
     handleAddCategoryMatches = () => {
         const categoryMatchesItems = [...this.props.attributes.categoryMatchesItems];
         categoryMatchesItems.push('');
@@ -88,10 +74,6 @@ class ProductCartAddons extends Component {
 
     handleCategoryMatchesChange = (category, index) => {
         const categoryMatches = [...this.props.attributes.categoryMatches];
-
-        // console.log('Category Selected: ', category);
-        // console.log('Category Matches: ', categoryMatches);
-        // console.log('===========================================');
 
         categoryMatches[index] = category;
         this.props.setAttributes({categoryMatches});
@@ -125,15 +107,6 @@ class ProductCartAddons extends Component {
         });
 
         return null;
-    }
-
-    /**
-     * Get Default Addons
-     *
-     * @return {*}
-     */
-    getDefaultAddons() {
-        return this.props.defaultAddons;
     }
 
     /**
@@ -193,16 +166,6 @@ class ProductCartAddons extends Component {
 
                 <ProductAddonsSelect {...this.props} />
 
-                <FormTokenField
-                    label={__('Select Default Product Add-ons:')}
-                    value={[]}
-                    suggestions={this.getProductOptions()}
-                    maxSuggestions={5}
-                    onChange={(products) => {
-                        products.map(product => console.log(product));
-
-                    }}
-                />
                 <RangeControl
                     label={__("Number of Products", "woo-gutenberg-blocks")}
                     value={numberOfProducts}
