@@ -139,16 +139,6 @@ function woo_gutenberg_blocks_register()
                     'type'    => 'array',
                     'default' => []
                 ),
-                'categoryAddons'       => array (
-                    'type'    => 'array',
-                    'default' => get_option('sfn_cart_addons_categories',
-                        array ()) !== null ? get_option('sfn_cart_addons_categories', array ()) : []
-                ),
-                'productAddons'        => array (
-                    'type'    => 'array',
-                    'default' => get_option('sfn_cart_addons_products',
-                        array ()) !== null ? get_option('sfn_cart_addons_products', array ()) : []
-                ),
                 'columns'              => array (
                     'type'    => 'number',
                     'default' => 3
