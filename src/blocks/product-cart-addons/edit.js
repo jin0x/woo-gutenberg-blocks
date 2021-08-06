@@ -16,7 +16,7 @@ import {InspectorControls} from "@wordpress/block-editor";
  * Internal Dependencies
  */
 import ProductAddonsSelect from "../../editor-components/product-addons-select"
-import ProductCategorySelect from "../../editor-components/product-category-select"
+import CategoryMatchesPanel from "../../editor-panels/category-matches-panel";
 import {Product} from "../../components/Product/";
 
 class ProductCartAddons extends Component {
@@ -39,18 +39,6 @@ class ProductCartAddons extends Component {
 
     onChangeProductCategories = productCategories => {
         this.props.setAttributes({productCategories});
-    };
-
-    handleAddCategoryMatches = () => {
-        const categoryMatchesItems = [...this.props.attributes.categoryMatchesItems];
-        categoryMatchesItems.push('');
-        this.props.setAttributes({categoryMatchesItems});
-    };
-
-    handleRemoveCategoryMatches = (index) => {
-        const categoryMatchesItems = [...this.props.attributes.categoryMatchesItems];
-        categoryMatchesItems.splice(index, 1);
-        this.props.setAttributes({categoryMatchesItems});
     };
 
     /**
@@ -98,50 +86,9 @@ class ProductCartAddons extends Component {
                     min={1}
                     max={10}
                 />
+
             </PanelBody>
         )
-    }
-
-    /**
-     * Get category matches controls
-     */
-    getCategoryMatchesControls() {
-        let categoryMatchesFields;
-
-        const {attributes} = this.props;
-        const {
-            categoryMatchesItems,
-        } = attributes;
-
-        if (categoryMatchesItems.length) {
-            categoryMatchesFields = categoryMatchesItems.map((location, index) => {
-                return (
-                    <>
-                        <ProductCategorySelect {...this.props} index={index}/>
-
-                        <ProductAddonsSelect {...this.props} index={index} label={__('Select Product Add-ons:')}/>
-
-                        <IconButton
-                            icon="no-alt"
-                            label="Delete category match"
-                            onClick={() => this.handleRemoveCategoryMatches(index)}
-                        />
-                    </>
-                );
-            });
-        }
-
-        return (
-            <PanelBody title={__('Category Matches')}>
-                {categoryMatchesFields}
-                <Button
-                    isPrimary
-                    onClick={this.handleAddCategoryMatches.bind(this)}
-                >
-                    {__('Add Category Match')}
-                </Button>
-            </PanelBody>
-        );
     }
 
     /**
@@ -181,7 +128,7 @@ class ProductCartAddons extends Component {
 
                 {this.getDefaultControls()}
 
-                {this.getCategoryMatchesControls()}
+                <CategoryMatchesPanel {...this.props} />
 
                 {this.getLayoutControls()}
 
