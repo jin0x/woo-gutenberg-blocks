@@ -9,8 +9,6 @@ import {
     IconButton,
     PanelBody,
     RangeControl,
-    TextControl,
-    ToggleControl,
 } from "@wordpress/components";
 import {InspectorControls} from "@wordpress/block-editor";
 
@@ -37,22 +35,6 @@ class ProductCartAddons extends Component {
 
     onChangeColumns = columns => {
         this.props.setAttributes({columns});
-    };
-
-    onChangeProductTitleVisibility = hasProductTitle => {
-        this.props.setAttributes({hasProductTitle});
-    };
-
-    onChangeProductPriceVisibility = hasProductPrice => {
-        this.props.setAttributes({hasProductPrice});
-    };
-
-    onChangeProductRatingVisibility = hasProductRating => {
-        this.props.setAttributes({hasProductRating});
-    };
-
-    onChangeProductButtonVisibility = hasProductButton => {
-        this.props.setAttributes({hasProductButton});
     };
 
     onChangeProductCategories = productCategories => {
@@ -98,25 +80,16 @@ class ProductCartAddons extends Component {
     getDefaultControls() {
         const {attributes} = this.props;
         const {
-            headerTitle,
             numberOfProducts,
         } = attributes;
 
-        return [
+        return (
             <PanelBody
                 title={__("Default Options", "woo-gutenberg-blocks")}
                 initialOpen
             >
-                <TextControl
-                    value={headerTitle}
-                    label={__("Display Title", "woo-gutenberg-blocks")}
-                    labelPosition="top"
-                    type="text"
-                    isPressEnterToChange
-                    onChange={(text) => this.props.setAttributes({headerTitle: text})}
-                />
 
-                <ProductAddonsSelect {...this.props} label={__('Select product default addons:')} />
+                <ProductAddonsSelect {...this.props} label={__('Select product default addons:')}/>
 
                 <RangeControl
                     label={__("Number of Products", "woo-gutenberg-blocks")}
@@ -125,16 +98,8 @@ class ProductCartAddons extends Component {
                     min={1}
                     max={10}
                 />
-                <TextControl
-                    value={numberOfProducts}
-                    label={__("Number of Products", "woo-gutenberg-blocks")}
-                    labelPosition="top"
-                    type="number"
-                    isPressEnterToChange
-                    onChange={this.onChangeNumberOfProducts}
-                />
             </PanelBody>
-        ]
+        )
     }
 
     /**
@@ -154,7 +119,7 @@ class ProductCartAddons extends Component {
                     <>
                         <ProductCategorySelect {...this.props} index={index}/>
 
-                        <ProductAddonsSelect {...this.props} index={index} label={__('Select Product Add-ons:')} />
+                        <ProductAddonsSelect {...this.props} index={index} label={__('Select Product Add-ons:')}/>
 
                         <IconButton
                             icon="no-alt"
@@ -166,8 +131,7 @@ class ProductCartAddons extends Component {
             });
         }
 
-        return [
-
+        return (
             <PanelBody title={__('Category Matches')}>
                 {categoryMatchesFields}
                 <Button
@@ -177,8 +141,7 @@ class ProductCartAddons extends Component {
                     {__('Add Category Match')}
                 </Button>
             </PanelBody>
-
-        ];
+        );
     }
 
     /**
@@ -190,7 +153,7 @@ class ProductCartAddons extends Component {
         const {attributes} = this.props;
         const {columns} = attributes;
 
-        return [
+        return (
             <PanelBody
                 title={__("Layout Options", "woo-gutenberg-blocks")}
                 initialOpen
@@ -203,95 +166,7 @@ class ProductCartAddons extends Component {
                     max={6}
                 />
             </PanelBody>
-        ]
-    }
-
-    /**
-     * Get Content Controls
-     *
-     * @return {JSX.Element[]}
-     */
-    getContentControls() {
-        const {attributes} = this.props;
-
-        const {
-            hasProductTitle,
-            hasProductPrice,
-            hasProductRating,
-            hasProductButton,
-        } = attributes;
-
-        return [
-            <PanelBody
-                title={__("Content Options", "woo-gutenberg-block")}
-                initialOpen
-            >
-                <ToggleControl
-                    label={__("Product title", "woo-gutenberg-block")}
-                    help={
-                        hasProductTitle
-                            ? __(
-                            "Product title is visible.",
-                            "woo-gutenberg-block"
-                            )
-                            : __(
-                            "Product title is hidden.",
-                            "woo-gutenberg-block"
-                            )
-                    }
-                    checked={hasProductTitle}
-                    onChange={this.onChangeProductTitleVisibility}
-                />
-                <ToggleControl
-                    label={__("Product price", "woo-gutenberg-block")}
-                    help={
-                        hasProductPrice
-                            ? __(
-                            "Product price is visible.",
-                            "woo-gutenberg-block"
-                            )
-                            : __(
-                            "Product price is hidden.",
-                            "woo-gutenberg-block"
-                            )
-                    }
-                    checked={hasProductPrice}
-                    onChange={this.onChangeProductPriceVisibility}
-                />
-                <ToggleControl
-                    label={__("Product rating", "woo-gutenberg-block")}
-                    help={
-                        hasProductRating
-                            ? __(
-                            "Product rating is visible.",
-                            "woo-gutenberg-block"
-                            )
-                            : __(
-                            "Product rating is hidden.",
-                            "woo-gutenberg-block"
-                            )
-                    }
-                    checked={hasProductRating}
-                    onChange={this.onChangeProductRatingVisibility}
-                />
-                <ToggleControl
-                    label={__("Add to Cart button", "woo-gutenberg-block")}
-                    help={
-                        hasProductButton
-                            ? __(
-                            "Add to Cart button is visible.",
-                            "woo-gutenberg-block"
-                            )
-                            : __(
-                            "Add to Cart button is hidden.",
-                            "woo-gutenberg-block"
-                            )
-                    }
-                    checked={hasProductButton}
-                    onChange={this.onChangeProductButtonVisibility}
-                />
-            </PanelBody>
-        ]
+        )
     }
 
     /**
@@ -310,8 +185,6 @@ class ProductCartAddons extends Component {
 
                 {this.getLayoutControls()}
 
-                {this.getContentControls()}
-
             </InspectorControls>
         );
     }
@@ -321,10 +194,8 @@ class ProductCartAddons extends Component {
         const {className, attributes} = this.props;
         const {
             columns,
-            headerTitle,
         } = attributes;
 
-        const titleClasses = `${className}__title`;
         const productsClasses = `${className}__products ${className}__products-col-${columns}`;
 
         this.getProductCartAddons();
@@ -338,7 +209,6 @@ class ProductCartAddons extends Component {
                 {this.getInspectorControls()}
                 {products && products.length > 0 ? (
                     <div className={className}>
-                        <h3 className={titleClasses}>{headerTitle}</h3>
                         <ul className={productsClasses}>
                             {products.map((product) => <Product product={product} key={product.id}
                                                                 attributes={attributes}/>)}

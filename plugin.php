@@ -119,12 +119,6 @@ function woo_gutenberg_blocks_register()
         array (
             'render_callback' => 'woo_gutenberg_blocks_render_products_block',
             'attributes'      => array (
-                'headerTitle'          => array (
-                    'type'    => 'string',
-                    'default' => get_option('sfn_cart_addons') && get_option('sfn_cart_addons')['header_title']
-                                                                  !== null ? get_option('sfn_cart_addons')['header_title'] : __('Product Cart add-ons',
-                        'woo-gutenberg-blocks')
-                ),
                 'numberOfProducts'     => array (
                     'type'    => 'number',
                     'default' => get_option('sfn_cart_addons') && get_option('sfn_cart_addons')['upsell_number'] !== null ? get_option('sfn_cart_addons')['upsell_number'] : 5
@@ -163,22 +157,6 @@ function woo_gutenberg_blocks_register()
                     'type'    => 'number',
                     'default' => 3
                 ),
-                'hasProductTitle'      => array (
-                    'type'    => 'boolean',
-                    'default' => true
-                ),
-                'hasProductPrice'      => array (
-                    'type'    => 'boolean',
-                    'default' => true
-                ),
-                'hasProductRating'     => array (
-                    'type'    => 'boolean',
-                    'default' => true
-                ),
-                'hasProductButton'     => array (
-                    'type'    => 'boolean',
-                    'default' => true
-                ),
             )
         )
     );
@@ -199,7 +177,6 @@ function woo_gutenberg_blocks_render_products_block( $attributes )
 {
 
     $products     = '';
-    $header_title = $attributes['header_title'];
 
     $args = array (
         'post_type'      => 'product',
@@ -207,10 +184,6 @@ function woo_gutenberg_blocks_render_products_block( $attributes )
     );
 
     $query = new WP_Query($args);
-
-    if ($header_title) {
-        $products .= '<h3 class="wp-block-woo-gutenberg-blocks-product-cart-addons__title">' . $header_title . '</h3>';
-    }
 
     if ($query->have_posts()) {
         $products .= '<ul class="wp-block-woo-gutenberg-blocks-product-cart-addons">';
