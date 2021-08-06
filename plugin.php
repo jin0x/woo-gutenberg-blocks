@@ -135,6 +135,10 @@ function woo_gutenberg_blocks_register()
                     'type'    => 'array',
                     'default' => []
                 ),
+                'productMatchesItems' => array (
+                    'type'    => 'array',
+                    'default' => []
+                ),
                 'productMatches'       => array (
                     'type'    => 'array',
                     'default' => []
