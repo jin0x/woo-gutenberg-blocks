@@ -5,6 +5,9 @@
 * Description: Custom Blocks for WooCommerce.
 * Author: John Leskas
 * Author URI https://rsh.studio
+* Version: 1.0.1
+* Requires at least: 4.0
+* Tested up to: 4.0
 */
 
 if ( ! defined('ABSPATH')) {
