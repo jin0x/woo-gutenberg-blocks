@@ -13,26 +13,26 @@ import ProductCategorySelect from "../../editor-components/product-category-sele
 class ProductMatchesPanel extends Component {
 
     handleAddProductMatches = () => {
-        const categoryMatchesItems = [...this.props.attributes.categoryMatchesItems];
-        categoryMatchesItems.push('');
-        this.props.setAttributes({categoryMatchesItems});
+        const productMatchesItems = [...this.props.attributes.productMatchesItems];
+        productMatchesItems.push('');
+        this.props.setAttributes({productMatchesItems});
     };
 
     handleRemoveProductMatches = (index) => {
-        const categoryMatchesItems = [...this.props.attributes.categoryMatchesItems];
-        categoryMatchesItems.splice(index, 1);
-        this.props.setAttributes({categoryMatchesItems});
+        const productMatchesItems = [...this.props.attributes.productMatchesItems];
+        productMatchesItems.splice(index, 1);
+        this.props.setAttributes({productMatchesItems});
     };
 
     render() {
-        let categoryMatchesFields;
+        let productMatchesFields;
         const {attributes} = this.props;
         const {
-            categoryMatchesItems,
+            productMatchesItems,
         } = attributes;
 
-        if (categoryMatchesItems.length) {
-            categoryMatchesFields = categoryMatchesItems.map((location, index) => {
+        if (productMatchesItems.length) {
+            productMatchesFields = productMatchesItems.map((location, index) => {
                 return (
                     <>
                         <ProductCategorySelect {...this.props} index={index}/>
@@ -41,7 +41,7 @@ class ProductMatchesPanel extends Component {
 
                         <IconButton
                             icon="no-alt"
-                            label="Delete category match"
+                            label="Delete product match"
                             onClick={() => this.handleRemoveProductMatches(index)}
                         />
                     </>
@@ -50,13 +50,13 @@ class ProductMatchesPanel extends Component {
         }
 
         return (
-            <PanelBody title={__('Category Matches')}>
-                {categoryMatchesFields}
+            <PanelBody title={__('Product Matches')}>
+                {productMatchesFields}
                 <Button
                     isPrimary
                     onClick={this.handleAddProductMatches.bind(this)}
                 >
-                    {__('Add Category Match')}
+                    {__('Add Product Match')}
                 </Button>
             </PanelBody>
         );

@@ -15,6 +15,7 @@ import {InspectorControls} from "@wordpress/block-editor";
  */
 import ProductAddonsSelect from "../../editor-components/product-addons-select"
 import CategoryMatchesPanel from "../../editor-panels/category-matches-panel";
+import ProductMatchesPanel from "../../editor-panels/product-matches-panel";
 import {Product} from "../../components/Product/";
 
 class ProductCartAddons extends Component {
@@ -116,6 +117,8 @@ class ProductCartAddons extends Component {
                 {this.getDefaultControls()}
 
                 <CategoryMatchesPanel {...this.props} />
+
+                <ProductMatchesPanel {...this.props} />
 
                 {this.getLayoutControls()}
 
