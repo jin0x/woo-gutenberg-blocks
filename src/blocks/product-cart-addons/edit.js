@@ -5,8 +5,6 @@ import "./style.editor.scss";
 import {Component} from "@wordpress/element";
 import {__} from "@wordpress/i18n";
 import {
-    Button,
-    IconButton,
     PanelBody,
     RangeControl,
 } from "@wordpress/components";
@@ -29,17 +27,6 @@ class ProductCartAddons extends Component {
         };
     }
 
-    onChangeNumberOfProducts = numberOfProducts => {
-        this.props.setAttributes({numberOfProducts});
-    };
-
-    onChangeColumns = columns => {
-        this.props.setAttributes({columns});
-    };
-
-    onChangeProductCategories = productCategories => {
-        this.props.setAttributes({productCategories});
-    };
 
     /**
      * Get Product cart add-ons
@@ -82,7 +69,7 @@ class ProductCartAddons extends Component {
                 <RangeControl
                     label={__("Number of Products", "woo-gutenberg-blocks")}
                     value={numberOfProducts}
-                    onChange={this.onChangeNumberOfProducts}
+                    onChange={(products) => this.props.setAttributes({numberOfProducts: products})}
                     min={1}
                     max={10}
                 />
@@ -108,7 +95,7 @@ class ProductCartAddons extends Component {
                 <RangeControl
                     label={__("Columns", "woo-gutenberg-blocks")}
                     value={columns}
-                    onChange={this.onChangeColumns}
+                    onChange={(columns) => this.props.setAttributes({columns})}
                     min={1}
                     max={6}
                 />
