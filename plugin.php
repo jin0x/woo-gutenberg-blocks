@@ -122,35 +122,39 @@ function woo_gutenberg_blocks_register()
         array (
             'render_callback' => 'woo_gutenberg_blocks_render_products_block',
             'attributes'      => array (
-                'numberOfProducts'     => array (
+                'numberOfProducts'                => array (
                     'type'    => 'number',
                     'default' => get_option('sfn_cart_addons') && get_option('sfn_cart_addons')['upsell_number'] !== null ? get_option('sfn_cart_addons')['upsell_number'] : 5
                 ),
-                'defaultAddons'        => array (
+                'defaultAddons'                   => array (
                     'type'    => 'array',
                     'default' => []
                 ),
-                'categoryMatchesItems' => array (
+                'categoryMatchesItems'            => array (
                     'type'    => 'array',
                     'default' => []
                 ),
-                'categoryMatches'      => array (
+                'categoryMatchesSelectedCategory' => array (
                     'type'    => 'array',
                     'default' => []
                 ),
-                'productMatchesItems' => array (
+                'categoryMatchesProductAddons'    => array (
                     'type'    => 'array',
                     'default' => []
                 ),
-                'productMatches'       => array (
+                'productMatchesItems'             => array (
                     'type'    => 'array',
                     'default' => []
                 ),
-                'columns'              => array (
+                'productMatches'                  => array (
+                    'type'    => 'array',
+                    'default' => []
+                ),
+                'columns'                         => array (
                     'type'    => 'number',
                     'default' => 3
                 ),
-                'rows'                 => array (
+                'rows'                            => array (
                     'type'    => 'number',
                     'default' => 3
                 ),
@@ -173,7 +177,7 @@ add_action('init', 'woo_gutenberg_blocks_register');
 function woo_gutenberg_blocks_render_products_block( $attributes )
 {
 
-    $products     = '';
+    $products = '';
 
     $args = array (
         'post_type'      => 'product',

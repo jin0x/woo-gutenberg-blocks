@@ -16,7 +16,6 @@ import {InspectorControls} from "@wordpress/block-editor";
 import ProductAddonsSelect from "../../editor-components/product-addons-select"
 import CategoryMatchesPanel from "../../editor-panels/category-matches-panel";
 import ProductMatchesPanel from "../../editor-panels/product-matches-panel";
-import {Sortable} from "../../editor-components/sortable";
 import {Product} from "../../components/Product/";
 
 class ProductCartAddons extends Component {
@@ -75,8 +74,6 @@ class ProductCartAddons extends Component {
                     min={1}
                     max={10}
                 />
-
-                <Sortable attributes={attributes} />
 
             </PanelBody>
         )

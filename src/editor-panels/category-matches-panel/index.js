@@ -15,10 +15,6 @@ import {getRandomInt} from "../../utils/index";
 
 class CategoryMatchesPanel extends Component {
 
-    state = {
-        list: this.props.attributes.categoryMatchesItems ?? []
-    }
-
     handleAddCategoryMatches = () => {
         const categoryMatchesItems = [...this.props.attributes.categoryMatchesItems];
         categoryMatchesItems.push({id: getRandomInt(1, 1000)});
@@ -29,6 +25,10 @@ class CategoryMatchesPanel extends Component {
         const categoryMatchesItems = [...this.props.attributes.categoryMatchesItems];
         categoryMatchesItems.splice(index, 1);
         this.props.setAttributes({categoryMatchesItems});
+
+        if(categoryMatchesItems.length === 0) {
+            this.props.setAttributes({categoryMatchesSelectedCategory: []})
+        }
     };
 
     handleSortCategoryMatches = (newState) => {
@@ -45,11 +45,11 @@ class CategoryMatchesPanel extends Component {
         if (categoryMatchesItems.length) {
             categoryMatchesFields = attributes.categoryMatchesItems.map((item, index) => {
                 return (
-                    <div key={item.id} style={{cursor: 'pointer'}}>
+                    <div key={item.id} style={{cursor: 'grab'}}>
 
                         <span>{item.id}</span>
 
-                        <ProductCategorySelect {...this.props} index={index}/>
+                        <ProductCategorySelect {...this.props} index={index} />
 
                         <ProductAddonsSelect {...this.props} index={index} label={__('Select Product Add-ons:')}/>
 
