@@ -76,7 +76,7 @@ class ProductCartAddons extends Component {
                     max={10}
                 />
 
-                <Sortable />
+                <Sortable attributes={attributes} />
 
             </PanelBody>
         )
@@ -143,6 +143,10 @@ class ProductCartAddons extends Component {
         if (loading) {
             return <div>Loading Products...</div>
         }
+
+        console.log('✨✨✨✨✨✨✨✨✨✨✨✨');
+        console.log('Attributes::: ', attributes);
+        console.log('✨✨✨✨✨✨✨✨✨✨✨✨');
 
         return (
             <>

@@ -14,7 +14,7 @@ class ProductMatchesPanel extends Component {
 
     handleAddProductMatches = () => {
         const productMatchesItems = [...this.props.attributes.productMatchesItems];
-        productMatchesItems.push('');
+        productMatchesItems.push({id: ''});
         this.props.setAttributes({productMatchesItems});
     };
 
