@@ -5,13 +5,13 @@ import {__} from "@wordpress/i18n";
 
 const ProductCategorySelect = ({...props}) => {
     const {attributes, index} = props;
-    const {categoryMatchesSelectedCategory} = attributes;
+    const {categoryMatches, categoryMatchesSelectedCategory} = attributes;
 
     /**
      * TODO: Fetch items from WC categories
      */
     const categoryOptions = [
-        {value: 0, label: 'Select a Category', disabled: true},
+        {value: 0, label: 'Select a Category'},
         {value: 1, label: 'Hoodies'},
         {value: 2, label: 'Shirts'},
         {value: 3, label: 'Jeans'}
@@ -23,20 +23,10 @@ const ProductCategorySelect = ({...props}) => {
             value={categoryMatchesSelectedCategory[index] ?? []}
             options={categoryOptions}
             onChange={(category) => {
-                const categoryMatchesSelectedCategory = [...categoryMatchesSelectedCategory];
+                const selectedCategories = [...categoryMatchesSelectedCategory];
 
-                console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
-                console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
-                console.log('All selected categories PRIOR:', categoryMatchesSelectedCategory);
-
-
-                categoryMatchesSelectedCategory[index] = category;
-                props.setAttributes({categoryMatchesSelectedCategory});
-
-                console.log('Selected category:', category);
-                console.log('All selected categories AFTER:', categoryMatchesSelectedCategory);
-                console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
-                console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
+                selectedCategories[index] = category;
+                props.setAttributes({categoryMatchesSelectedCategory: selectedCategories});
             }}
         />
     ) : (
