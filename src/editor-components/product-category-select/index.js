@@ -5,7 +5,7 @@ import {__} from "@wordpress/i18n";
 
 const ProductCategorySelect = ({...props}) => {
     const {attributes, index} = props;
-    const {categoryMatches, categoryMatchesSelectedCategory} = attributes;
+    const {categoryMatchesSelectedCategory} = attributes;
 
     /**
      * TODO: Fetch items from WC categories

@@ -3,7 +3,7 @@ import {FormTokenField} from '@wordpress/components';
 
 const ProductAddonsSelect = ({...props}) => {
     const {attributes, index} = props;
-    const {defaultAddons, productMatches} = attributes;
+    const {defaultAddons, categoryMatchesProductAddons} = attributes;
 
     const productsAddons = [
         'Hoodie with zipper',
@@ -15,13 +15,13 @@ const ProductAddonsSelect = ({...props}) => {
     return index || index === 0 ? (
         <FormTokenField
             label="Add product default addons"
-            value={productMatches[index] ?? []}
+            value={categoryMatchesProductAddons[index] ?? []}
             suggestions={productsAddons}
             onChange={(tokens) => {
-                const productMatches = [...props.attributes.productMatches];
+                const selectedProducts = [...categoryMatchesProductAddons];
 
-                productMatches[index] = tokens;
-                props.setAttributes({productMatches});
+                selectedProducts[index] = tokens;
+                props.setAttributes({categoryMatchesProductAddons: selectedProducts});
             }}
         />
     ) : (
@@ -32,6 +32,6 @@ const ProductAddonsSelect = ({...props}) => {
             onChange={(tokens) => props.setAttributes({defaultAddons: tokens})}
         />
     );
-};
+}
 
 export default ProductAddonsSelect;
