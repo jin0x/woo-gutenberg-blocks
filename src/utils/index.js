@@ -19,7 +19,7 @@ const getProductsRequests = ({
                                  search = '',
                                  queryArgs = [],
                              }) => {
-    const isLargeCatalog = blocksConfig.productCount > 100;
+    const isLargeCatalog = false;
     const defaultArgs = {
         per_page: isLargeCatalog ? 100 : 0,
         catalog_visibility: 'any',
@@ -122,3 +122,30 @@ export const getRandomInt = (min, max) => {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
 }
+
+/**
+ * Move an item from one index to another in an array.
+ *
+ * @param  {Array}   arr  The array to move the item in
+ * @param  {Integer} from The starting index of the item
+ * @param  {Integer} to   The new index for the item
+ */
+export const moveInArray = (arr, from, to) => {
+
+    // Make sure a valid array is provided
+    if (Object.prototype.toString.call(arr) !== '[object Array]') {
+        throw new Error('Please provide a valid array');
+    }
+
+    // Delete the item from it's current position
+    const item = arr.splice(from, 1);
+
+    // Make sure there's an item to move
+    if (!item.length) {
+        throw new Error('There is no item in the array at index ' + from);
+    }
+
+    // Move the item to its new position
+    arr.splice(to, 0, item[0]);
+
+};

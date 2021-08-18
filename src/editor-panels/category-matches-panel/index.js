@@ -11,14 +11,20 @@ import {ReactSortable} from "react-sortablejs";
 import ProductAddonsSelect from "../../editor-components/product-addons-select";
 import ProductCategorySelect from "../../editor-components/product-category-select";
 
-import {getRandomInt} from "../../utils/index";
+import {getRandomInt, moveInArray} from "../../utils/index";
 
 class CategoryMatchesPanel extends Component {
 
     handleAddCategoryMatches = () => {
+        const randomNum = getRandomInt(1, 1000);
+
         const categoryMatchesItems = [...this.props.attributes.categoryMatchesItems];
-        categoryMatchesItems.push({id: getRandomInt(1, 1000)});
+        categoryMatchesItems.push({id: randomNum});
         this.props.setAttributes({categoryMatchesItems});
+
+        const categoryMatches = [...this.props.attributes.categoryMatches];
+        categoryMatches.push({id: randomNum});
+        this.props.setAttributes({categoryMatches});
     };
 
     handleRemoveCategoryMatches = (index) => {
@@ -26,13 +32,36 @@ class CategoryMatchesPanel extends Component {
         categoryMatchesItems.splice(index, 1);
         this.props.setAttributes({categoryMatchesItems});
 
-        if(categoryMatchesItems.length === 0) {
+        const categoryMatches = [...this.props.attributes.categoryMatches];
+        categoryMatches.splice(index, 1);
+        this.props.setAttributes({categoryMatches});
+
+        if (categoryMatchesItems.length === 0 || categoryMatches.length === 0) {
             this.props.setAttributes({categoryMatchesSelectedCategory: []})
+            this.props.setAttributes({categoryMatchesProductAddons: []})
         }
     };
 
     handleSortCategoryMatches = (newState) => {
         this.props.setAttributes({categoryMatchesItems: newState})
+        this.props.setAttributes({categoryMatches: newState})
+    }
+
+    handleOnEndSort = (evt) => {
+        const oldIndex = evt.oldIndex;
+        const newIndex = evt.newIndex;
+
+        if (this.props.attributes.categoryMatchesProductAddons.length > 0) {
+            const categoryMatchesProductAddons = [...this.props.attributes.categoryMatchesProductAddons];
+            moveInArray(categoryMatchesProductAddons, oldIndex, newIndex);
+            this.props.setAttributes({categoryMatchesProductAddons})
+        }
+
+        if (this.props.attributes.categoryMatchesSelectedCategory.length > 0) {
+            const categoryMatchesSelectedCategory = [...this.props.attributes.categoryMatchesSelectedCategory];
+            moveInArray(categoryMatchesSelectedCategory, oldIndex, newIndex);
+            this.props.setAttributes({categoryMatchesSelectedCategory})
+        }
     }
 
     render() {
@@ -47,9 +76,7 @@ class CategoryMatchesPanel extends Component {
                 return (
                     <div key={item.id} style={{cursor: 'grab'}}>
 
-                        <span>{item.id}</span>
-
-                        <ProductCategorySelect {...this.props} index={index} />
+                        <ProductCategorySelect {...this.props} index={index}/>
 
                         <ProductAddonsSelect {...this.props} index={index} label={__('Select Product Add-ons:')}/>
 
@@ -66,6 +93,7 @@ class CategoryMatchesPanel extends Component {
         const sortableList = <ReactSortable
             list={attributes.categoryMatchesItems}
             setList={(newState) => this.handleSortCategoryMatches(newState)}
+            onEnd={(evt) => this.handleOnEndSort(evt)}
         >
             {categoryMatchesFields}
         </ReactSortable>

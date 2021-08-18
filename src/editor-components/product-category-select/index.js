@@ -5,7 +5,7 @@ import {__} from "@wordpress/i18n";
 
 const ProductCategorySelect = ({...props}) => {
     const {attributes, index} = props;
-    const {categoryMatchesSelectedCategory} = attributes;
+    const {categoryMatches, categoryMatchesSelectedCategory} = attributes;
 
     /**
      * TODO: Fetch items from WC categories
@@ -24,7 +24,6 @@ const ProductCategorySelect = ({...props}) => {
             options={categoryOptions}
             onChange={(category) => {
                 const selectedCategories = [...categoryMatchesSelectedCategory];
-
                 selectedCategories[index] = category;
                 props.setAttributes({categoryMatchesSelectedCategory: selectedCategories});
             }}
