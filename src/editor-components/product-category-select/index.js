@@ -4,8 +4,16 @@ import {__} from "@wordpress/i18n";
 
 
 const ProductCategorySelect = ({...props}) => {
-    const {attributes, index, productMatchesSelect} = props;
-    const {categoryMatchesSelectedCategory, productMatchesSelectedCategory} = attributes;
+    let selectControl = null;
+    const {
+        index,
+        attributes,
+        productMatchesSelect
+    } = props;
+    const {
+        categoryMatchesSelectedCategory,
+        productMatchesSelectedCategory
+    } = attributes;
 
     /**
      * TODO: Fetch items from WC categories
@@ -17,40 +25,43 @@ const ProductCategorySelect = ({...props}) => {
         {value: 3, label: 'Jeans'}
     ];
 
-    const selectControl = productMatchesSelect ? (
-        <SelectControl
-            label={__('Select category:')}
-            value={productMatchesSelectedCategory[index] ?? []}
-            options={categoryOptions}
-            onChange={(category) => {
-                const selectedCategories = [...productMatchesSelectedCategory];
-                selectedCategories[index] = category;
-                props.setAttributes({productMatchesSelectedCategory: selectedCategories});
-            }}
-        />
-    ) : (
-        <SelectControl
-            label={__('Select category:')}
-            value={categoryMatchesSelectedCategory[index] ?? []}
-            options={categoryOptions}
-            onChange={(category) => {
-                const selectedCategories = [...categoryMatchesSelectedCategory];
-                selectedCategories[index] = category;
-                props.setAttributes({categoryMatchesSelectedCategory: selectedCategories});
-            }}
-        />
-    )
 
-    return index || index === 0 ? (
-        {selectControl}
-    ) : (
-        <SelectControl
+    if (index || index === 0) {
+
+        if (productMatchesSelect) {
+            selectControl = <SelectControl
+                label={__('Select category:')}
+                value={productMatchesSelectedCategory[index] ?? []}
+                options={categoryOptions}
+                onChange={(category) => {
+                    const selectedCategories = [...productMatchesSelectedCategory];
+                    selectedCategories[index] = category;
+                    props.setAttributes({productMatchesSelectedCategory: selectedCategories});
+                }}
+            />
+        } else {
+            selectControl = <SelectControl
+                label={__('Select category:')}
+                value={categoryMatchesSelectedCategory[index] ?? []}
+                options={categoryOptions}
+                onChange={(category) => {
+                    const selectedCategories = [...categoryMatchesSelectedCategory];
+                    selectedCategories[index] = category;
+                    props.setAttributes({categoryMatchesSelectedCategory: selectedCategories});
+                }}
+            />
+        }
+    } else {
+        selectControl = <SelectControl
             label={__('Select category:')}
             value={categoryMatchesSelectedCategory[index] ?? []}
             options={categoryOptions}
             onChange={(category) => props.setAttributes({categoryMatchesSelectedCategory: category})}
         />
-    );
+    }
+
+
+    return selectControl;
 };
 
 export default ProductCategorySelect;

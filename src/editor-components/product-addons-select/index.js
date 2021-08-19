@@ -1,8 +1,10 @@
 import React from 'react';
 import {FormTokenField} from '@wordpress/components';
+import {__} from "@wordpress/i18n";
 
 const ProductAddonsSelect = ({...props}) => {
-    const {attributes, index, productMatchesSelectedCategory} = props;
+    let selectControl = null;
+    const {attributes, index, productMatchesSelect} = props;
     const {defaultAddons, categoryMatchesProductAddons, productMatchesProductAddons} = attributes;
 
     const productsAddons = [
@@ -12,8 +14,10 @@ const ProductAddonsSelect = ({...props}) => {
         'Red Hat',
     ];
 
-    const selectControl = productMatchesSelectedCategory ? (
-            <FormTokenField
+    if (index || index === 0) {
+
+        if (productMatchesSelect) {
+            selectControl = <FormTokenField
                 label="Add product default addons"
                 value={productMatchesProductAddons[index] ?? []}
                 suggestions={productsAddons}
@@ -24,9 +28,9 @@ const ProductAddonsSelect = ({...props}) => {
                     props.setAttributes({productMatchesProductAddons: selectedProducts});
                 }}
             />
-        ) : (
-            <FormTokenField
-                label="Add product default addons"
+        } else {
+            selectControl = <FormTokenField
+                label={__('Add product default addons')}
                 value={categoryMatchesProductAddons[index] ?? []}
                 suggestions={productsAddons}
                 onChange={(tokens) => {
@@ -36,18 +40,17 @@ const ProductAddonsSelect = ({...props}) => {
                     props.setAttributes({categoryMatchesProductAddons: selectedProducts});
                 }}
             />
-        )
-
-    return index || index === 0 ? (
-        {selectControl}
-    ) : (
-        <FormTokenField
-            label="Add product default addon"
+        }
+    } else {
+        selectControl = <FormTokenField
+            label={__('Add product default addons')}
             value={defaultAddons}
             suggestions={productsAddons}
             onChange={(tokens) => props.setAttributes({defaultAddons: tokens})}
         />
-    );
+    }
+
+    return selectControl;
 }
 
 export default ProductAddonsSelect;

@@ -118,7 +118,7 @@ class ProductCartAddons extends Component {
 
                 <CategoryMatchesPanel {...this.props} />
 
-                {/*<ProductMatchesPanel {...this.props} />*/}
+                <ProductMatchesPanel {...this.props} />
 
                 {this.getLayoutControls()}
 
