@@ -130,10 +130,6 @@ function woo_gutenberg_blocks_register()
                     'type'    => 'array',
                     'default' => []
                 ),
-                'categoryMatchesItems'            => array (
-                    'type'    => 'array',
-                    'default' => []
-                ),
                 'categoryMatches'            => array (
                     'type'    => 'array',
                     'default' => []
@@ -146,11 +142,15 @@ function woo_gutenberg_blocks_register()
                     'type'    => 'array',
                     'default' => []
                 ),
-                'productMatchesItems'             => array (
+                'productMatches'                  => array (
                     'type'    => 'array',
                     'default' => []
                 ),
-                'productMatches'                  => array (
+                'productMatchesSelectedCategory' => array (
+                    'type'    => 'array',
+                    'default' => []
+                ),
+                'productMatchesProductAddons'    => array (
                     'type'    => 'array',
                     'default' => []
                 ),
