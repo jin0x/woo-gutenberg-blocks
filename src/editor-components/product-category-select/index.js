@@ -4,8 +4,8 @@ import {__} from "@wordpress/i18n";
 
 
 const ProductCategorySelect = ({...props}) => {
-    const {attributes, index} = props;
-    const {categoryMatches, categoryMatchesSelectedCategory} = attributes;
+    const {attributes, index, productMatchesSelect} = props;
+    const {categoryMatchesSelectedCategory, productMatchesSelectedCategory} = attributes;
 
     /**
      * TODO: Fetch items from WC categories
@@ -17,7 +17,18 @@ const ProductCategorySelect = ({...props}) => {
         {value: 3, label: 'Jeans'}
     ];
 
-    return index || index === 0 ? (
+    const selectControl = productMatchesSelect ? (
+        <SelectControl
+            label={__('Select category:')}
+            value={productMatchesSelectedCategory[index] ?? []}
+            options={categoryOptions}
+            onChange={(category) => {
+                const selectedCategories = [...productMatchesSelectedCategory];
+                selectedCategories[index] = category;
+                props.setAttributes({productMatchesSelectedCategory: selectedCategories});
+            }}
+        />
+    ) : (
         <SelectControl
             label={__('Select category:')}
             value={categoryMatchesSelectedCategory[index] ?? []}
@@ -28,6 +39,10 @@ const ProductCategorySelect = ({...props}) => {
                 props.setAttributes({categoryMatchesSelectedCategory: selectedCategories});
             }}
         />
+    )
+
+    return index || index === 0 ? (
+        {selectControl}
     ) : (
         <SelectControl
             label={__('Select category:')}

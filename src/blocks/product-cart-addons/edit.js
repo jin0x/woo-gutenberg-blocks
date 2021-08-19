@@ -141,9 +141,9 @@ class ProductCartAddons extends Component {
             return <div>Loading Products...</div>
         }
 
-        // console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
-        // console.log('Attributes::: ', attributes);
-        // console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
+        console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
+        console.log('Attributes::: ', attributes);
+        console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
 
         return (
             <>
