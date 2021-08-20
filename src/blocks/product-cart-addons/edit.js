@@ -4,18 +4,15 @@ import "./style.editor.scss";
  */
 import {Component} from "@wordpress/element";
 import {__} from "@wordpress/i18n";
-import {
-    PanelBody,
-    RangeControl,
-} from "@wordpress/components";
 import {InspectorControls} from "@wordpress/block-editor";
 
 /**
  * Internal Dependencies
  */
-import ProductAddonsSelect from "../../editor-components/product-addons-select"
 import CategoryMatchesPanel from "../../editor-panels/category-matches-panel";
 import ProductMatchesPanel from "../../editor-panels/product-matches-panel";
+import DefaultOptions from "../../editor-panels/default-options";
+import LayoutOptions from "../../editor-panels/layout-options";
 import {Product} from "../../components/Product/";
 
 class ProductCartAddons extends Component {
@@ -27,7 +24,6 @@ class ProductCartAddons extends Component {
             loading: true
         };
     }
-
 
     /**
      * Get Product cart add-ons
@@ -49,62 +45,6 @@ class ProductCartAddons extends Component {
     }
 
     /**
-     * Get Default Controls
-     *
-     * @return {JSX.Element[]}
-     */
-    getDefaultControls() {
-        const {attributes} = this.props;
-        const {
-            numberOfProducts,
-        } = attributes;
-
-        return (
-            <PanelBody
-                title={__("Default Options", "woo-gutenberg-blocks")}
-                initialOpen
-            >
-
-                <ProductAddonsSelect {...this.props} label={__('Select product default addons:')}/>
-
-                <RangeControl
-                    label={__("Number of Products", "woo-gutenberg-blocks")}
-                    value={numberOfProducts}
-                    onChange={(products) => this.props.setAttributes({numberOfProducts: products})}
-                    min={1}
-                    max={10}
-                />
-
-            </PanelBody>
-        )
-    }
-
-    /**
-     * Get Layout Controls
-     *
-     * @return {JSX.Element[]}
-     */
-    getLayoutControls() {
-        const {attributes} = this.props;
-        const {columns} = attributes;
-
-        return (
-            <PanelBody
-                title={__("Layout Options", "woo-gutenberg-blocks")}
-                initialOpen
-            >
-                <RangeControl
-                    label={__("Columns", "woo-gutenberg-blocks")}
-                    value={columns}
-                    onChange={(columns) => this.props.setAttributes({columns})}
-                    min={1}
-                    max={6}
-                />
-            </PanelBody>
-        )
-    }
-
-    /**
      * Get Inspector Controls
      *
      * @return {JSX.Element}
@@ -114,13 +54,13 @@ class ProductCartAddons extends Component {
         return (
             <InspectorControls>
 
-                {this.getDefaultControls()}
+                <DefaultOptions {...this.props} />
 
                 <CategoryMatchesPanel {...this.props} />
 
                 <ProductMatchesPanel {...this.props} />
 
-                {this.getLayoutControls()}
+                <LayoutOptions {...this.props} />
 
             </InspectorControls>
         );
