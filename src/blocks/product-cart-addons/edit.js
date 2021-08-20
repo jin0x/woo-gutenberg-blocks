@@ -9,85 +9,40 @@ import {InspectorControls} from "@wordpress/block-editor";
 /**
  * Internal Dependencies
  */
+import LayoutOptions from "../../editor-panels/layout-options";
+import DefaultOptions from "../../editor-panels/default-options";
 import CategoryMatchesPanel from "../../editor-panels/category-matches-panel";
 import ProductMatchesPanel from "../../editor-panels/product-matches-panel";
-import DefaultOptions from "../../editor-panels/default-options";
-import LayoutOptions from "../../editor-panels/layout-options";
 import {Product} from "../../components/Product/";
+import withProductCartAddons from "../../hocs/with-product-card-addons"
 
 class ProductCartAddons extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            products: [],
-            loading: true
-        };
-    }
-
-    /**
-     * Get Product cart add-ons
-     *
-     * @return {null}
-     */
-    getProductCartAddons() {
-        wp.apiFetch({
-            path: "wc/store/cart"
-        }).then(data => {
-            this.setState({
-                products: data?.extensions?.add_ons?.products ?? [],
-                headerTitle: data?.extensions?.add_ons?.header_title ?? null,
-                loading: false
-            });
-        });
-
-        return null;
-    }
-
-    /**
-     * Get Inspector Controls
-     *
-     * @return {JSX.Element}
-     */
-    getInspectorControls() {
-
-        return (
-            <InspectorControls>
-
-                <DefaultOptions {...this.props} />
-
-                <CategoryMatchesPanel {...this.props} />
-
-                <ProductMatchesPanel {...this.props} />
-
-                <LayoutOptions {...this.props} />
-
-            </InspectorControls>
-        );
-    }
-
     render() {
-        const {loading, products} = this.state;
-        const {className, attributes} = this.props;
+        const {className, attributes, products, isLoading} = this.props;
         const {
             columns,
         } = attributes;
-
         const productsClasses = `${className}__products ${className}__products-col-${columns}`;
 
-        this.getProductCartAddons();
-
-        if (loading) {
+        if (isLoading) {
             return <div>Loading Products...</div>
         }
 
-        console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
-        console.log('Attributes::: ', attributes);
-        console.log('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨');
-
         return (
             <>
-                {this.getInspectorControls()}
+                <InspectorControls>
+
+                    <DefaultOptions {...this.props} />
+
+                    <CategoryMatchesPanel {...this.props} />
+
+                    <ProductMatchesPanel {...this.props} />
+
+                    <LayoutOptions {...this.props} />
+
+                </InspectorControls>
+
                 {products && products.length > 0 ? (
                     <div className={className}>
                         <ul className={productsClasses}>
@@ -102,4 +57,4 @@ class ProductCartAddons extends Component {
 
 }
 
-export default ProductCartAddons;
+export default withProductCartAddons(ProductCartAddons);
