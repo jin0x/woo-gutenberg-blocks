@@ -115,12 +115,10 @@ export const getCategory = (categoryId) => {
  *
  */
 export const getCartOptions = () => {
-    return apiFetch({
-        path: `wc/store/cart`,
+    return wp.apiFetch({
+        path: 'wc/store/cart',
     });
 };
-
-
 
 /**
  * Get random int
