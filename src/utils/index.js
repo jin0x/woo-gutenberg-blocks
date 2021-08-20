@@ -111,6 +111,18 @@ export const getCategory = (categoryId) => {
 };
 
 /**
+ * Get a promise that resolves to cart object from the API.
+ *
+ */
+export const getCartOptions = () => {
+    return apiFetch({
+        path: `wc/store/cart`,
+    });
+};
+
+
+
+/**
  * Get random int
  *
  * @param min
