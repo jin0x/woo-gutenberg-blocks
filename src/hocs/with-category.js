@@ -3,12 +3,12 @@
  */
 import { Component } from '@wordpress/element';
 import { createHigherOrderComponent } from '@wordpress/compose';
-import { getCategory } from '@woocommerce/editor-components/utils';
+import { getCategory } from '../utils';
 
 /**
  * Internal dependencies
  */
-import { formatError } from '../base/utils/errors.js';
+import { formatError } from '../utils/errors.js';
 
 /**
  * HOC that queries a category for a component.
