@@ -2,12 +2,12 @@ import React from 'react';
 import {SelectControl} from '@wordpress/components';
 import {__} from "@wordpress/i18n";
 
-
 const ProductCategorySelect = ({...props}) => {
     let selectControl = null;
     const {
         index,
         attributes,
+        categories,
         productMatchesSelect
     } = props;
     const {
@@ -15,16 +15,13 @@ const ProductCategorySelect = ({...props}) => {
         productMatchesSelectedCategory
     } = attributes;
 
-    /**
-     * TODO: Fetch items from WC categories
-     */
-    const categoryOptions = [
-        {value: 0, label: 'Select a Category'},
-        {value: 1, label: 'Hoodies'},
-        {value: 2, label: 'Shirts'},
-        {value: 3, label: 'Jeans'}
+    let categoryOptions = [
+        {value: -1, label: 'Select a Category'},
     ];
 
+    categories.length > 0 && categories.map((category) => {
+        categoryOptions.push({value: category.id, label: category.name});
+    })
 
     if (index || index === 0) {
 
@@ -59,7 +56,6 @@ const ProductCategorySelect = ({...props}) => {
             onChange={(category) => props.setAttributes({categoryMatchesSelectedCategory: category})}
         />
     }
-
 
     return selectControl;
 };

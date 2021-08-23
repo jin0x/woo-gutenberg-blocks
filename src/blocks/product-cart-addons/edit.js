@@ -13,13 +13,15 @@ import LayoutOptions from "../../editor-panels/layout-options";
 import DefaultOptions from "../../editor-panels/default-options";
 import CategoryMatchesPanel from "../../editor-panels/category-matches-panel";
 import ProductMatchesPanel from "../../editor-panels/product-matches-panel";
-import {Product} from "../../components/Product/";
+import Product from "../../components/Product/";
 import withProductCartAddons from "../../hocs/with-product-card-addons"
+import withCategories from "../../hocs/with-categories"
+import withProducts from "../../hocs/with-products";
 
 class ProductCartAddons extends Component {
 
     render() {
-        const {className, attributes, products, isLoading} = this.props;
+        const {className, attributes, productsAddons, isLoading} = this.props;
         const {
             columns,
         } = attributes;
@@ -43,11 +45,11 @@ class ProductCartAddons extends Component {
 
                 </InspectorControls>
 
-                {products && products.length > 0 ? (
+                {productsAddons && productsAddons.length > 0 ? (
                     <div className={className}>
                         <ul className={productsClasses}>
-                            {products.map((product) => <Product product={product} key={product.id}
-                                                                attributes={attributes}/>)}
+                            {productsAddons.map((product) => <Product product={product} key={product.id}
+                                                                      attributes={attributes}/>)}
                         </ul>
                     </div>
                 ) : (<div>{__("No Products Found", "woo-gutenberg-blocks")}</div>)}
@@ -57,4 +59,6 @@ class ProductCartAddons extends Component {
 
 }
 
-export default withProductCartAddons(ProductCartAddons);
+// TODO: We might need to end up combining all those HOCs into one,
+//  in order to get the desired properties
+export default withProducts(withCategories(withProductCartAddons(ProductCartAddons)));
