@@ -22,7 +22,7 @@ const withProductCartAddons = createHigherOrderComponent((OriginalComponent) => 
             this.state = {
                 error: null,
                 loading: false,
-                products: [],
+                productsAddons: [],
             };
             this.loadProductCartAddons = this.loadProductCartAddons.bind(this);
         }
@@ -37,7 +37,7 @@ const withProductCartAddons = createHigherOrderComponent((OriginalComponent) => 
            getCartOptions()
                 .then((data) => {
                     this.setState({
-                        products: data.extensions.add_ons.products,
+                        productsAddons: data.extensions.add_ons.products,
                         loading: false,
                         error: null,
                     });
@@ -46,7 +46,7 @@ const withProductCartAddons = createHigherOrderComponent((OriginalComponent) => 
                     const error = await formatError(e);
 
                     this.setState({
-                        products: [],
+                        productsAddons: [],
                         loading: false,
                         error,
                     });
@@ -54,14 +54,14 @@ const withProductCartAddons = createHigherOrderComponent((OriginalComponent) => 
         }
 
         render() {
-            const {error, loading, products} = this.state;
+            const {error, loading, productsAddons} = this.state;
 
             return (
                 <OriginalComponent
                     {...this.props}
                     error={error}
                     isLoading={loading}
-                    products={products}
+                    productsAddons={productsAddons}
                 />
             );
         }

@@ -3,7 +3,7 @@ import {decodeEntities} from "@wordpress/html-entities"
 import {Rating} from "@woocommerce/components"
 import './styles.scss'
 
-export const Product = ({product}) => {
+const Product = ({product}) => {
 
         return (
             <>
